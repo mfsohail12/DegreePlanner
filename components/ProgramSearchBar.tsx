@@ -15,9 +15,6 @@ const ProgramSearchBar = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const router = useRouter();
 
-  console.log(searchResults);
-  console.log({ search });
-
   useEffect(() => {
     const searchProgram = async (searchInput: string) => {
       setError("");
@@ -36,8 +33,6 @@ const ProgramSearchBar = () => {
         setError(
           "There was an error searching for that program: " + error.message
         );
-
-      console.log({ data });
 
       if (data && data.length > 0) {
         setSearchResults(data);

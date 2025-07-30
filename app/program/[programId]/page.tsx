@@ -1,4 +1,4 @@
-import React from "react";
+import ProgramInformation from "@/components/ProgramInformation";
 
 const Program = async ({
   params,
@@ -7,7 +7,12 @@ const Program = async ({
 }) => {
   const { programId } = await params;
 
-  return <div>Program {programId}</div>;
+  return (
+    <div className="w-screen pt-10 px-10">
+      <ProgramInformation programId={programId} />
+      <div className="border-b-1 mt-10"></div>
+    </div>
+  );
 };
 
 export default Program;
