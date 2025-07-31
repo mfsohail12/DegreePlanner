@@ -7,3 +7,28 @@ declare interface Program {
   faculty: string;
   total_credits: number;
 }
+
+declare interface RequirementGroup {
+  id: number;
+  program_id: number;
+  category_type: string;
+  group_name: string;
+  min_credits?: number;
+  min_course_level?: number;
+  max_course_level?: number;
+  is_dynamic: boolean;
+  department_filter?: string[];
+  note?: string;
+}
+
+declare interface Course {
+  course_code: string;
+  inserted_at: string;
+  course_name: string;
+  course_description: string;
+  faculty_name: string;
+  credits: number;
+  prerequisites?: string;
+  prerequisites_bool_exp?: string;
+  restrictions?: string;
+}

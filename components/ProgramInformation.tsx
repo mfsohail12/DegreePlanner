@@ -38,7 +38,7 @@ const ProgramInformation = async ({ programId }: { programId: string }) => {
           Offered by: {program.faculty}
         </div>
       </span>
-      <ProgressBar completedCredits={20} totalCredits={program.total_credits} />
+      <ProgressBar completedCredits={2} totalCredits={program.total_credits} />
       <h2 className="mt-8 mb-4 text-2xl font-semibold">Program Description</h2>
       <p>{program.program_description}</p>
       <BscRequirements />

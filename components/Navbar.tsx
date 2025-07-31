@@ -18,7 +18,9 @@ const Navbar = () => {
         />
         <h1 className="font-bold">DegreePlanner</h1>
       </Link>
-      {pathname === "/" ? (
+      {pathname.startsWith("/program") ? (
+        <CourseSearchBar />
+      ) : (
         <span className="flex gap-4">
           <Link
             href="/suggest-program"
@@ -39,8 +41,6 @@ const Navbar = () => {
             About
           </Link>
         </span>
-      ) : (
-        <CourseSearchBar />
       )}
     </nav>
   );
