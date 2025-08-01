@@ -19,6 +19,7 @@ declare interface RequirementGroup {
   is_dynamic: boolean;
   department_filter?: string[];
   note?: string;
+  group_description?: string;
 }
 
 declare interface Course {

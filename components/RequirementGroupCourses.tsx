@@ -66,6 +66,9 @@ const RequirementGroupCourses = async ({
             totalCredits={requirementGroup.min_credits}
           />
         )}
+      {requirementGroup.group_description && (
+        <p className="font-semibold">{requirementGroup.group_description}</p>
+      )}
       {requirementGroup.note && (
         <p className="text-xs mt-1">Note: {requirementGroup.note}</p>
       )}

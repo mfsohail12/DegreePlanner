@@ -32,10 +32,10 @@ const ProgramInformation = async ({ programId }: { programId: string }) => {
       </h1>
       <span className="flex gap-2 mb-5">
         <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs">
-          Degree: {program.degree}
+          <span className="font-semibold">Degree:</span> {program.degree}
         </div>
         <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs">
-          Offered by: {program.faculty}
+          <span className="font-semibold">Offered By:</span> {program.faculty}
         </div>
       </span>
       <ProgressBar completedCredits={2} totalCredits={program.total_credits} />
