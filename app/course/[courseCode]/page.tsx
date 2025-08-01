@@ -56,7 +56,7 @@ const page = async ({
         <>
           <h2 className="mt-8 mb-4 text-2xl font-semibold">Prerequisites:</h2>
           <p className="mb-5">{course.prerequisites}</p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 flex-wrap">
             {prerequisites.map((prereq) => (
               <CourseNode courseCode={prereq} />
             ))}

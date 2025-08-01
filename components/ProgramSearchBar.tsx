@@ -18,7 +18,7 @@ const ProgramSearchBar = () => {
   useEffect(() => {
     const searchProgram = async (searchInput: string) => {
       setError("");
-      if (!searchInput) {
+      if (!searchInput.trim()) {
         setSearchResults([]);
         return;
       }
