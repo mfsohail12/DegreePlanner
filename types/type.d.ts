@@ -33,3 +33,5 @@ declare interface Course {
   prerequisites_bool_exp?: string;
   restrictions?: string;
 }
+
+type CourseCode = string;

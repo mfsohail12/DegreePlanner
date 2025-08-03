@@ -1,29 +1,89 @@
 "use client";
+import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 import { convertCourseCode } from "@/lib/course";
+import { parsePrereqs } from "@/lib/parser";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegCheckCircle } from "react-icons/fa";
 
-const CourseNode = ({ courseCode }: { courseCode: string }) => {
-  const [buttonColor, setButtonColor] = useState<string>("bg-light-grey");
+const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
+  const { completedCourses, setCompletedCourses } = useCompletedCourses();
+  const [prereqBooleanExp, setPrereqBooleanExp] = useState<string>("");
+  const [isSuggested, setIsSuggested] = useState<boolean>(false);
   const router = useRouter();
+
+  console.log({ prereqBooleanExp, isSuggested });
+
+  useEffect(() => {
+    const fetchPrereqBool = async (courseCode: CourseCode) => {
+      try {
+        const { data, error } = await supabase
+          .from("course")
+          .select("prerequisites_bool_exp")
+          .eq("course_code", courseCode);
+
+        if (error) throw error;
+
+        if (!data) setPrereqBooleanExp("");
+        else setPrereqBooleanExp(data[0].prerequisites_bool_exp);
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    };
+    fetchPrereqBool(courseCode);
+  }, []);
+
+  useEffect(() => {
+    const prereqsMet = (prereqs: CourseCode[][]) => {
+      for (let i = 0; i < prereqs.length; i++) {
+        for (let j = 0; j < prereqs[i].length; j++) {
+          const course = prereqs[i][j];
+
+          if (completedCourses.includes(course)) {
+            break;
+          }
+          if (j == prereqs[i].length - 1) return false;
+        }
+      }
+      return true;
+    };
+
+    const prereqs = parsePrereqs(prereqBooleanExp);
+
+    if (prereqsMet(prereqs)) {
+      setIsSuggested(true);
+    } else {
+      setIsSuggested(false);
+    }
+  }, [prereqBooleanExp, completedCourses]);
+
+  const isCompleted = completedCourses.includes(courseCode);
+
+  const handleCheckClick = (event: any) => {
+    event.stopPropagation();
+
+    if (isCompleted) {
+      setCompletedCourses([
+        ...completedCourses.filter((code) => code !== courseCode),
+      ]);
+    } else {
+      setCompletedCourses([...completedCourses, courseCode]);
+    }
+  };
 
   return (
     <button
-      className={`w-42 border-[0.5px] rounded-full hover:shadow-lg ${buttonColor} py-2 flex items-center px-5 gap-2 justify-center`}
+      className={`w-42 border-[0.5px] rounded-full hover:shadow-lg ${
+        isCompleted ? "bg-green" : isSuggested ? "bg-yellow" : "bg-light-grey"
+      } py-2 flex items-center px-5 gap-2 justify-center`}
       onClick={() =>
         router.push(`/course/${convertCourseCode(courseCode, true)}`)
       }
     >
       <p className="font-semibold">{courseCode}</p>
-      <FaRegCheckCircle
-        onClick={(e) => {
-          e.stopPropagation();
-          setButtonColor(
-            buttonColor === "bg-light-grey" ? "bg-green" : "bg-light-grey"
-          );
-        }}
-      />
+      <FaRegCheckCircle onClick={handleCheckClick} />
     </button>
   );
 };

@@ -24,7 +24,7 @@ const Navbar = () => {
           />
           <h1 className="font-bold">DegreePlanner</h1>
         </Link>
-        {pathname.startsWith("/program") ? (
+        {pathname.startsWith("/program") || pathname.startsWith("/course") ? (
           <CourseSearchBar
             search={search}
             setSearch={setSearch}

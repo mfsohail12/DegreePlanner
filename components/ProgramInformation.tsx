@@ -1,50 +1,68 @@
+"use client";
 import { supabase } from "@/lib/supabase";
 import BscRequirements from "./BscRequirements";
 import ProgressBar from "./ProgressBar";
+import { useEffect, useState } from "react";
+import { useProgram } from "@/context/ProgramContext";
+import Spinner from "./Spinner";
 
-const ProgramInformation = async ({ programId }: { programId: string }) => {
-  const fetchProgramInfo = async (
-    programId: string
-  ): Promise<Program | null> => {
-    try {
-      const { data, error } = await supabase
-        .from("program")
-        .select()
-        .eq("id", programId);
+const ProgramInformation = ({ programId }: { programId: string }) => {
+  const [programInfo, setProgramInfo] = useState<Program | null>(null);
+  const { setProgram } = useProgram();
 
-      if (error) throw error;
+  useEffect(() => {
+    const fetchProgramInfo = async (programId: string) => {
+      try {
+        const { data, error } = await supabase
+          .from("program")
+          .select()
+          .eq("id", programId);
 
-      if (data.length == 0) return null;
+        if (error) throw error;
 
-      return data[0];
-    } catch (error) {
-      console.log("There was an error fetching program information: ", error);
-      throw error;
-    }
-  };
+        if (data.length == 0) {
+          setProgramInfo(null);
+          setProgram(null);
+          return;
+        }
 
-  const program = await fetchProgramInfo(programId);
+        setProgramInfo(data[0]);
+        setProgram(data[0]); // setting program context
+      } catch (error) {
+        console.log("There was an error fetching program information: ", error);
+        throw error;
+      }
+    };
 
-  return program ? (
+    fetchProgramInfo(programId);
+  }, []);
+
+  return programInfo ? (
     <div className="w-4/5">
       <h1 className="font-bold text-3xl mb-3">
-        {program.program_name} ({program.total_credits} Credits)
+        {programInfo.program_name} ({programInfo.total_credits} Credits)
       </h1>
       <span className="flex gap-2 mb-5">
         <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs">
-          <span className="font-semibold">Degree:</span> {program.degree}
+          <span className="font-semibold">Degree:</span> {programInfo.degree}
         </div>
         <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs">
-          <span className="font-semibold">Offered By:</span> {program.faculty}
+          <span className="font-semibold">Offered By:</span>{" "}
+          {programInfo.faculty}
         </div>
       </span>
-      <ProgressBar completedCredits={2} totalCredits={program.total_credits} />
+      <ProgressBar
+        completedCredits={2}
+        totalCredits={programInfo.total_credits}
+      />
       <h2 className="mt-8 mb-4 text-2xl font-semibold">Program Description</h2>
-      <p>{program.program_description}</p>
+      <p>{programInfo.program_description}</p>
       <BscRequirements />
     </div>
   ) : (
-    <div>There was an error fetching the program information</div>
+    <div className="flex justify-center items-center">
+      <Spinner className="text-4xl" />
+    </div>
   );
 };
 
