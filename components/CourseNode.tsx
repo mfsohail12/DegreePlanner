@@ -9,14 +9,16 @@ import { FaRegCheckCircle, FaCheckCircle } from "react-icons/fa";
 
 const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
-  const [prereqBooleanExp, setPrereqBooleanExp] = useState<string>("");
+  const [prereqBooleanExp, setPrereqBooleanExp] = useState<string | null>(null);
   const [isSuggested, setIsSuggested] = useState<boolean>(false);
   const [courseTitle, setCourseTitle] = useState<string>(courseCode);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchPrereqBool = async (courseCode: CourseCode) => {
       try {
+        setLoading(true);
         const { data, error } = await supabase
           .from("course")
           .select("prerequisites_bool_exp")
@@ -24,11 +26,13 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
 
         if (error) throw error;
 
-        if (!data) setPrereqBooleanExp("");
+        if (!data) return;
         else setPrereqBooleanExp(data[0].prerequisites_bool_exp);
       } catch (error) {
         console.log(error);
         throw error;
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -53,6 +57,8 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   }, []);
 
   useEffect(() => {
+    if (loading || prereqBooleanExp === null) return;
+
     const prereqsMet = (prereqs: CourseCode[][]) => {
       for (let i = 0; i < prereqs.length; i++) {
         for (let j = 0; j < prereqs[i].length; j++) {
@@ -68,6 +74,8 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
     };
 
     const prereqs = parsePrereqs(prereqBooleanExp);
+
+    console.log({ prereqs });
 
     if (prereqsMet(prereqs)) {
       setIsSuggested(true);

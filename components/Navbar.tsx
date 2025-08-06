@@ -41,7 +41,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="w-screen flex items-center justify-between h-[60px] bg-light-grey border-b-[0.5px] px-6 py-3 fixed top-0 z-100">
+      <nav className="w-screen flex items-center justify-between h-[60px] bg-light-grey border-b-[0.5px] px-10 py-3 fixed top-0 z-100">
         <Link href="/" className="flex items-center gap-1">
           <h1 className="font-bold text-xl">DegreePlanner</h1>
         </Link>
@@ -64,12 +64,6 @@ const Navbar = () => {
           </span>
         ) : (
           <span className="flex gap-4">
-            <Link
-              href="/suggest-program"
-              className="text-sm font-semibold rounded-full px-4 py-2 bg-foreground hover:opacity-90 text-light-grey"
-            >
-              Can't Find Your Program?
-            </Link>
             <Link
               href="/contact"
               className="text-sm font-semibold rounded-full px-4 py-2 bg-foreground hover:opacity-90 text-light-grey"
