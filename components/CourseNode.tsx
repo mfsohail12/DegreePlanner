@@ -11,6 +11,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
   const [prereqBooleanExp, setPrereqBooleanExp] = useState<string>("");
   const [isSuggested, setIsSuggested] = useState<boolean>(false);
+  const [courseTitle, setCourseTitle] = useState<string>(courseCode);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +31,25 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
         throw error;
       }
     };
+
+    const fetchCourseTitle = async (courseCode: string) => {
+      try {
+        const { data, error } = await supabase
+          .from("course")
+          .select("course_name")
+          .eq("course_code", courseCode);
+
+        if (error) throw error;
+
+        if (data) setCourseTitle(data[0].course_name);
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    };
+
     fetchPrereqBool(courseCode);
+    fetchCourseTitle(courseCode);
   }, []);
 
   useEffect(() => {
@@ -73,6 +92,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
 
   return (
     <button
+      title={courseTitle}
       className={`w-44 border-[0.5px] rounded-full hover:shadow-lg ${
         isCompleted
           ? "bg-green border-green-600"
