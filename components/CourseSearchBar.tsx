@@ -14,35 +14,35 @@ const CourseSearchBar = ({
   searchResults: string[];
   setSearchResults: Dispatch<SetStateAction<string[]>>;
 }) => {
-  useEffect(() => {
-    const searchCourse = async (search: string) => {
-      try {
-        if (!search.trim()) {
-          setSearchResults([]);
-          return;
-        }
-
-        const searchPattern = `%${search.trim()}%`;
-
-        const { data, error } = await supabase
-          .from("course")
-          .select("course_code")
-          .ilike("course_code", searchPattern)
-          .limit(6);
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          setSearchResults(data.map((result) => result.course_code));
-        } else {
-          setSearchResults([]);
-        }
-      } catch (error) {
-        console.log("There was an error searching for course: ", error);
-        throw error;
+  const searchCourse = async (search: string) => {
+    try {
+      if (!search.trim()) {
+        setSearchResults([]);
+        return;
       }
-    };
 
+      const searchPattern = `%${search.trim()}%`;
+
+      const { data, error } = await supabase
+        .from("course")
+        .select("course_code")
+        .ilike("course_code", searchPattern)
+        .limit(6);
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        setSearchResults(data.map((result) => result.course_code));
+      } else {
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.log("There was an error searching for course: ", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
     const delayDebounce = setTimeout(() => {
       searchCourse(search);
     }, 300);
@@ -59,6 +59,7 @@ const CourseSearchBar = ({
         placeholder="Search for courses"
         value={search}
         onChange={(event) => setSearch(event.target.value)}
+        onClick={() => search && searchCourse(search)}
       />
     </div>
   );

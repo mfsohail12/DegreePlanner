@@ -3,14 +3,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CourseSearchBar from "./CourseSearchBar";
-import { useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import CourseNode from "./CourseNode";
 
 const Navbar = () => {
   const [search, setSearch] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
+  const searchResultsRef = useRef<HTMLDivElement | null>(null);
 
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handler = (event: MouseEvent) => {
+      if (
+        searchResultsRef.current &&
+        !searchResultsRef.current.contains(event.target)
+      ) {
+        setSearchResults([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
 
   return (
     <>
@@ -55,7 +73,10 @@ const Navbar = () => {
         )}
       </nav>
       {searchResults.length > 0 && (
-        <div className="w-screen py-7 px-4 bg-white border-b-[0.5px] absolute top-14 shadow-lg flex gap-8 flex-wrap items-center justify-center">
+        <div
+          ref={searchResultsRef}
+          className="w-screen py-7 px-4 bg-white border-b-[0.5px] absolute top-14 shadow-lg flex gap-8 flex-wrap items-center justify-center"
+        >
           {searchResults.map((result) => (
             <CourseNode courseCode={result} />
           ))}
