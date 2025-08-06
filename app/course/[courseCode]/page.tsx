@@ -64,7 +64,9 @@ const page = () => {
         <p className="">Back to {program ? "program" : "home"}</p>
       </button>
       <span className="flex gap-3 items-center mb-3">
-        <h1 className="font-bold text-3xl">{course.course_code}</h1>
+        <h1 className="font-bold text-3xl">
+          {course.course_code}: {course.course_name}
+        </h1>
         <a
           href={`https://coursecatalogue.mcgill.ca/courses/${courseCode}/`}
           target="_blank"
