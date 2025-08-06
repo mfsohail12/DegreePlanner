@@ -74,7 +74,11 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   return (
     <button
       className={`w-44 border-[0.5px] rounded-full hover:shadow-lg ${
-        isCompleted ? "bg-green" : isSuggested ? "bg-yellow" : "bg-light-grey"
+        isCompleted
+          ? "bg-green border-green-600"
+          : isSuggested
+          ? "bg-yellow border-yellow-600"
+          : "bg-light-grey"
       } py-2 flex items-center px-5 gap-2 justify-center`}
       onClick={() =>
         router.push(`/course/${convertCourseCode(courseCode, true)}`)
