@@ -4,6 +4,7 @@ import RequirementGroupCourses from "./RequirementGroupCourses";
 import RequiredGroups from "./RequiredGroups";
 import ComplementaryGroups from "./ComplementaryGroups";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { notFound } from "next/navigation";
 
 const ProgramRequirements = async ({ programId }: { programId: string }) => {
   const fetchProgramRequirements = async (programId: string) => {
