@@ -3,6 +3,7 @@ import ProgressBar from "./ProgressBar";
 import RequirementGroupCourses from "./RequirementGroupCourses";
 import RequiredGroups from "./RequiredGroups";
 import ComplementaryGroups from "./ComplementaryGroups";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const ProgramRequirements = async ({ programId }: { programId: string }) => {
   const fetchProgramRequirements = async (programId: string) => {
@@ -48,6 +49,10 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
         </div>
         <div className="rounded-full bg-light-grey py-1 px-2 border-[0.5px]">
           Prerequisites Not Met
+        </div>
+        <div className="flex items-center gap-2">
+          <FaRegCheckCircle className="text-lg" />
+          <p>Mark as Complete</p>
         </div>
       </div>
 

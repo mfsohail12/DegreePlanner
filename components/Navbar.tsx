@@ -14,6 +14,10 @@ const Navbar = () => {
   const pathname = usePathname();
 
   useEffect(() => {
+    setSearch("");
+  }, [pathname]);
+
+  useEffect(() => {
     const handler = (event: MouseEvent) => {
       if (
         searchResultsRef.current &&
@@ -32,15 +36,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="w-screen bg-light-grey h-14 border-b-[0.5px] flex text-xl px-6 items-center justify-between relative top-0">
+      <nav className="w-screen bg-light-grey border-b-[0.5px] flex px-6 py-3 items-center justify-between relative top-0">
         <Link href="/" className="flex items-center gap-1">
-          <Image
-            src="/Logo.png"
-            width={60}
-            height={60}
-            alt="Degree Planner Logo"
-          />
-          <h1 className="font-bold">DegreePlanner</h1>
+          <h1 className="font-bold text-xl">DegreePlanner</h1>
         </Link>
         {pathname.startsWith("/program") || pathname.startsWith("/course") ? (
           <CourseSearchBar

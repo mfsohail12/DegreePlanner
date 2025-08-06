@@ -5,7 +5,7 @@ import { parsePrereqs } from "@/lib/parser";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaRegCheckCircle } from "react-icons/fa";
+import { FaRegCheckCircle, FaCheckCircle } from "react-icons/fa";
 
 const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
@@ -80,8 +80,26 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
         router.push(`/course/${convertCourseCode(courseCode, true)}`)
       }
     >
-      <p className="font-semibold">{courseCode}</p>
-      <FaRegCheckCircle onClick={handleCheckClick} />
+      <p
+        className={`font-semibold ${
+          isCompleted ? "text-green-600" : isSuggested ? "text-yellow-600" : ""
+        }`}
+      >
+        {courseCode}
+      </p>
+      {isCompleted ? (
+        <FaCheckCircle
+          className="text-green-600 text-md hover:opacity-80"
+          onClick={handleCheckClick}
+        />
+      ) : (
+        <FaRegCheckCircle
+          className={`text-md hover:opacity-80 ${
+            isSuggested && "text-yellow-600"
+          }`}
+          onClick={handleCheckClick}
+        />
+      )}
     </button>
   );
 };
