@@ -13,7 +13,7 @@ declare interface RequirementGroup {
   program_id: number;
   category_type: string;
   group_name: string;
-  min_credits?: number;
+  min_credits: number;
   min_course_level?: number;
   max_course_level?: number;
   is_dynamic: boolean;

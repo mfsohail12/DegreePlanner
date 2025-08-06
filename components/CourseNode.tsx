@@ -13,8 +13,6 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const [isSuggested, setIsSuggested] = useState<boolean>(false);
   const router = useRouter();
 
-  console.log({ prereqBooleanExp, isSuggested });
-
   useEffect(() => {
     const fetchPrereqBool = async (courseCode: CourseCode) => {
       try {
@@ -75,7 +73,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
 
   return (
     <button
-      className={`w-42 border-[0.5px] rounded-full hover:shadow-lg ${
+      className={`w-44 border-[0.5px] rounded-full hover:shadow-lg ${
         isCompleted ? "bg-green" : isSuggested ? "bg-yellow" : "bg-light-grey"
       } py-2 flex items-center px-5 gap-2 justify-center`}
       onClick={() =>

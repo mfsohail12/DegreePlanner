@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import CourseNode from "./CourseNode";
 import SkeletonCourseNode from "./SkeletonCourseNode";
+import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 
 const RequirementGroupCourses = ({
   requirementGroup,
@@ -14,6 +15,8 @@ const RequirementGroupCourses = ({
     []
   );
   const [loading, setLoading] = useState<boolean>(true);
+  const [completedCredits, setCompletedCredits] = useState<number>(0);
+  const { completedCourses } = useCompletedCourses();
 
   useEffect(() => {
     const fetchGroupCourses = async (requirementGroup: RequirementGroup) => {
@@ -58,6 +61,43 @@ const RequirementGroupCourses = ({
     };
     fetchGroupCourses(requirementGroup);
   }, []);
+
+  useEffect(() => {
+    if (requirementCourses.length == 0) return;
+    if (completedCourses.length == 0) setCompletedCredits(0);
+
+    const fetchCompletedCredits = async () => {
+      const completedRequirementCourses = requirementCourses.filter((c) =>
+        completedCourses.includes(c)
+      );
+
+      try {
+        const { data, error } = await supabase
+          .from("course")
+          .select("credits")
+          .in("course_code", completedRequirementCourses);
+
+        if (error) throw error;
+
+        const credits = data.map((item) => item.credits);
+
+        // console.log({
+        //   grouo_name: requirementGroup.group_name,
+        //   completedRequirementCourses,
+        //   completedCourses,
+        //   requirementCourses,
+        //   credits: credits.reduce((acc, curr) => (acc += curr), 0),
+        // });
+
+        setCompletedCredits(credits.reduce((acc, curr) => (acc += curr), 0));
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    };
+
+    fetchCompletedCredits();
+  }, [requirementCourses, completedCourses]);
 
   return loading ? (
     <div className={`w-full pt-5 pb-10 px-7 border-[0.5px] rounded-xl`}>
@@ -109,7 +149,7 @@ const RequirementGroupCourses = ({
       {requirementGroup.min_credits !== 0 &&
         requirementGroup.category_type !== "required" && (
           <ProgressBar
-            completedCredits={2}
+            completedCredits={completedCredits}
             totalCredits={requirementGroup.min_credits}
           />
         )}

@@ -36,7 +36,7 @@ const CompletedCoursesProvider: React.FC<{ children: React.ReactNode }> = ({
     <CompletedCoursesContext.Provider
       value={{ completedCourses, setCompletedCourses }}
     >
-      {children}s
+      {children}
     </CompletedCoursesContext.Provider>
   );
 };

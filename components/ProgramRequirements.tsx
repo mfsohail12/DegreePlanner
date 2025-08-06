@@ -1,11 +1,11 @@
 import { supabase } from "@/lib/supabase";
 import ProgressBar from "./ProgressBar";
 import RequirementGroupCourses from "./RequirementGroupCourses";
+import RequiredGroups from "./RequiredGroups";
+import ComplementaryGroups from "./ComplementaryGroups";
 
 const ProgramRequirements = async ({ programId }: { programId: string }) => {
-  const fetchProgramRequirements = async (
-    programId: string
-  ): Promise<RequirementGroup[] | null> => {
+  const fetchProgramRequirements = async (programId: string) => {
     try {
       const { data, error } = await supabase
         .from("requirement_group")
@@ -36,15 +36,6 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
       (group) => group.category_type === "complementary"
     ) ?? [];
 
-  const getTotalCredits = (requiredGroups: RequirementGroup[]) => {
-    return (
-      requiredGroups
-        .map((group: RequirementGroup) => group.min_credits)
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0) ??
-      0
-    );
-  };
-
   return (
     <div className="flex flex-col gap-10">
       {/* legend */}
@@ -61,54 +52,13 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
       </div>
 
       {/* Required courses */}
-      <div>
-        <span className="flex gap-4 items-center mb-4">
-          <h1 className="text-3xl font-semibold">Required Courses</h1>
-          <span className="flex-1">
-            <ProgressBar
-              completedCredits={2}
-              totalCredits={getTotalCredits(requiredGroups)}
-            />
-          </span>
-        </span>
-        <div className="flex flex-wrap gap-y-7 justify-between">
-          {requiredGroups && requiredGroups.length > 1 ? (
-            requiredGroups.map((group) => (
-              <RequirementGroupCourses
-                key={group.id}
-                requirementGroup={group}
-              />
-            ))
-          ) : (
-            <RequirementGroupCourses
-              requirementGroup={{ ...requiredGroups[0], group_name: "" }}
-            />
-          )}
-        </div>
-      </div>
+      <RequiredGroups requiredGroups={requiredGroups} programId={programId} />
 
       {/* Complementary courses */}
-      <div>
-        <span className="flex gap-4 items-center mb-4">
-          <h1 className="text-3xl font-semibold">Complementary Courses</h1>
-          <span className="flex-1">
-            <ProgressBar
-              completedCredits={3}
-              totalCredits={getTotalCredits(complementaryGroups)}
-            />
-          </span>
-        </span>
-        <div className="flex flex-wrap gap-y-7 justify-between">
-          {complementaryGroups &&
-            complementaryGroups.length > 0 &&
-            complementaryGroups.map((group) => (
-              <RequirementGroupCourses
-                key={group.id}
-                requirementGroup={group}
-              />
-            ))}
-        </div>
-      </div>
+      <ComplementaryGroups
+        complementaryGroups={complementaryGroups}
+        programId={programId}
+      />
     </div>
   );
 };
