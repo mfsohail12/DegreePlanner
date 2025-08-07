@@ -19,7 +19,10 @@ const Navbar = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    setSearch("");
+    if (pathname === "/") {
+      setSearch("");
+      setShowCompletedCoursesModal(false);
+    }
   }, [pathname]);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ const Navbar = () => {
         pathname.startsWith("/completed-courses") ? (
           <span className="flex gap-3">
             <button
-              className="rounded-full px-4 py-2 text-sm bg-foreground hover:opacity-90 text-light-grey"
+              className="rounded-full px-4 py-2 text-sm bg-foreground hover:opacity-90 text-light-grey font-semibold"
               onClick={() => setShowCompletedCoursesModal(true)}
             >
               View Completed Courses
@@ -64,12 +67,6 @@ const Navbar = () => {
           </span>
         ) : (
           <span className="flex gap-4">
-            <Link
-              href="/contact"
-              className="text-sm font-semibold rounded-full px-4 py-2 bg-foreground hover:opacity-90 text-light-grey"
-            >
-              Contact
-            </Link>
             <Link
               href="/about"
               className="text-sm font-semibold rounded-full px-4 py-2 bg-foreground hover:opacity-90 text-light-grey"

@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaRegCheckCircle, FaCheckCircle } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
@@ -99,7 +100,19 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   };
 
   return (
-    <button
+    <motion.button
+      initial={{
+        x: -10,
+      }}
+      animate={{
+        x: 0,
+        transition: {
+          type: "spring",
+          stiffness: 200,
+          delay: Math.random() * 0.2,
+          duration: 0.2,
+        },
+      }}
       title={courseTitle}
       className={`w-44 border-[0.5px] rounded-full hover:shadow-lg ${
         isCompleted
@@ -132,7 +145,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
           onClick={handleCheckClick}
         />
       )}
-    </button>
+    </motion.button>
   );
 };
 

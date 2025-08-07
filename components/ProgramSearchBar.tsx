@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { IoIosSearch } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 type SearchResult = {
   program_name: string;
@@ -50,7 +51,20 @@ const ProgramSearchBar = () => {
 
   return (
     <div className="relative">
-      <div className="flex items-center relative z-10 mt-6">
+      <motion.div
+        initial={{
+          x: 0,
+          y: 20,
+        }}
+        animate={{
+          x: 0,
+          y: 0,
+        }}
+        transition={{
+          type: "spring",
+        }}
+        className="flex items-center relative z-10 mt-6"
+      >
         <IoIosSearch className="text-2xl absolute left-3" />
         <input
           type="text"
@@ -59,7 +73,7 @@ const ProgramSearchBar = () => {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
-      </div>
+      </motion.div>
       {error && (
         <div className="z-10 bg-red-100 rounded-xl p-3 absolute top-full mt-3 shadow-lg">
           {error}
