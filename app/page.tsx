@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export default function Home() {
   return (
     <div className="w-screen flex flex-1 justify-center items-center">
-      <div className="relative p-3">
+      <div className="relative p-3 flex flex-col justify-center items-center">
         <motion.h1
           initial={{
             x: 0,
@@ -19,7 +19,7 @@ export default function Home() {
           transition={{
             type: "spring",
           }}
-          className="font-extrabold text-5xl text-shadow-lg z-10"
+          className="font-extrabold sm:text-5xl text-3xl text-shadow-lg z-10"
         >
           <span className="text-mcgill-red">Plan</span> Your Degree
         </motion.h1>
@@ -39,14 +39,16 @@ export default function Home() {
           transition={{
             type: "spring",
           }}
-          className="absolute -left-35 -bottom-22"
+          className="sm:absolute relative -bottom-5 sm:-left-35 sm:-bottom-22 flex justify-center"
         >
           <Image
             src="/mcgill-martlet.png"
-            width={300}
-            height={250}
+            width={0}
+            height={0}
             alt="McGill Martlet"
-            className=""
+            priority={true}
+            sizes="115rem"
+            className="sm:w-[100%] w-[75%] h-auto"
           />
         </motion.div>
       </div>

@@ -7,7 +7,9 @@ const ComplementaryGroups = ({
 }) => {
   return (
     <div>
-      <h1 className="text-3xl font-semibold mb-4">Complementary Courses</h1>
+      <h1 className="sm:text-3xl text-2xl font-semibold mb-4">
+        Complementary Courses
+      </h1>
 
       <div className="flex flex-wrap gap-y-7 justify-between">
         {complementaryGroups &&

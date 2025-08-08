@@ -41,7 +41,7 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
   return (
     <div className="flex flex-col gap-10">
       {/* legend */}
-      <div className="font-semibold text-sm flex gap-5 items-center">
+      <div className="font-semibold text-sm flex flex-wrap gap-5 items-center">
         <div className="rounded-full bg-green py-1 px-2 border-[0.5px]">
           Completed
         </div>

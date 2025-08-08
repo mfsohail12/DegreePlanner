@@ -3,10 +3,10 @@ import React from "react";
 const BscRequirements = () => {
   return (
     <>
-      <h2 className="mt-8 mb-4 text-2xl font-semibold">
+      <h2 className="mt-8 mb-4 sm:text-2xl text-lg font-semibold">
         Degree Requirements — B.Sc.
       </h2>
-      <span className="flex flex-col gap-3">
+      <span className="flex flex-col gap-3 text-sm sm:text-base">
         <p className="font-semibold italic">
           This program is offered as part of a Bachelor of Science (B.Sc.)
           degree.

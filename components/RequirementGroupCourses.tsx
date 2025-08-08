@@ -88,14 +88,6 @@ const RequirementGroupCourses = ({
 
         const credits = data.map((item) => item.credits);
 
-        // console.log({
-        //   grouo_name: requirementGroup.group_name,
-        //   completedRequirementCourses,
-        //   completedCourses,
-        //   requirementCourses,
-        //   credits: credits.reduce((acc, curr) => (acc += curr), 0),
-        // });
-
         setCompletedCredits(credits.reduce((acc, curr) => (acc += curr), 0));
       } catch (error) {
         console.log(error);
@@ -109,9 +101,7 @@ const RequirementGroupCourses = ({
   return loading ? (
     <div className={`w-full pt-5 pb-10 px-7 border-[0.5px] rounded-xl`}>
       {requirementGroup.group_name && (
-        <h2 className="text-2xl font-semibold">
-          {requirementGroup.group_name}
-        </h2>
+        <h2 className="text-xl font-semibold">{requirementGroup.group_name}</h2>
       )}
       {requirementGroup.min_credits !== 0 &&
         requirementGroup.category_type !== "required" && (
@@ -121,7 +111,9 @@ const RequirementGroupCourses = ({
           />
         )}
       {requirementGroup.group_description && (
-        <p className="font-semibold">{requirementGroup.group_description}</p>
+        <p className="sm:text-base text-sm font-semibold">
+          {requirementGroup.group_description}
+        </p>
       )}
       {requirementGroup.note && (
         <p className="text-xs mt-1">Note: {requirementGroup.note}</p>
@@ -144,14 +136,12 @@ const RequirementGroupCourses = ({
     <div
       className={`${
         requirementCourses && requirementCourses?.length <= 4
-          ? "w-49/100"
+          ? "sm:w-49/100 w-full"
           : "w-full"
-      } pt-5 pb-15 px-7 border-[0.5px] rounded-xl relative`}
+      } pt-5 pb-15 sm:px-7 px-5 border-[0.5px] rounded-xl relative`}
     >
       {requirementGroup.group_name && (
-        <h2 className="text-2xl font-semibold">
-          {requirementGroup.group_name}
-        </h2>
+        <h2 className="text-xl font-semibold">{requirementGroup.group_name}</h2>
       )}
       {requirementGroup.min_credits !== 0 &&
         requirementGroup.category_type !== "required" && (
@@ -161,7 +151,9 @@ const RequirementGroupCourses = ({
           />
         )}
       {requirementGroup.group_description && (
-        <p className="font-semibold">{requirementGroup.group_description}</p>
+        <p className="sm:text-base text-sm font-semibold">
+          {requirementGroup.group_description}
+        </p>
       )}
       {requirementGroup.note && (
         <p className="text-xs mt-1">Note: {requirementGroup.note}</p>

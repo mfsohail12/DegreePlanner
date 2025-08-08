@@ -51,11 +51,11 @@ const CourseSearchBar = ({
   }, [search]);
 
   return (
-    <div className="flex items-center relative">
-      <IoIosSearch className="text-xl absolute left-3" />
+    <div className="w-40 h-8 sm:w-88 flex items-center relative ">
+      <IoIosSearch className="sm:text-xl text-sm absolute left-3" />
       <input
         type="text"
-        className="w-88 text-sm indent-7 border-[0.5px] rounded-full px-3 py-2 bg-white"
+        className="w-full h-full text-xs sm:indent-7 indent-6 border-[0.5px] rounded-full sm:px-3 sm:py-2 px-2 py-1 bg-white"
         placeholder="Search for courses"
         value={search}
         onChange={(event) => setSearch(event.target.value)}

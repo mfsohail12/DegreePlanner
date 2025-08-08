@@ -33,9 +33,9 @@ const Program = async ({
   const programInfo = await fetchProgramInfo(programId);
 
   return (
-    <div className="w-screen pt-10 pb-20 px-10">
+    <div className="w-screen pt-10 pb-20 sm:px-10 px-5">
       <ProgramInformation programId={programId} programInfo={programInfo} />
-      <div className="border-b-4 my-10 relative -left-10 w-screen"></div>
+      <div className="border-b-4 my-10 relative w-screen sm:-left-10 -left-5"></div>
       <ProgramRequirements programId={programId} />
     </div>
   );

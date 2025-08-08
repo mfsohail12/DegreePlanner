@@ -63,24 +63,24 @@ const ProgramSearchBar = () => {
         transition={{
           type: "spring",
         }}
-        className="flex items-center relative z-10 mt-6"
+        className="sm:w-102 w-80 flex items-center relative z-10 mt-6"
       >
-        <IoIosSearch className="text-2xl absolute left-3" />
+        <IoIosSearch className="sm:text-2xl text-xl absolute left-3" />
         <input
           type="text"
-          className="w-102 indent-7 border-[0.5px] rounded-full py-2 px-3 shadow-lg bg-white"
+          className="w-102 indent-7 border-[0.5px] rounded-full sm:py-2 sm:px-3 px-2 py-1 shadow-lg bg-white"
           placeholder="Find Your Program"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
       </motion.div>
       {error && (
-        <div className="z-10 bg-red-100 rounded-xl p-3 absolute top-full mt-3 shadow-lg">
+        <div className="z-10 sm:w-102 w-80 bg-red-100 rounded-xl p-3 absolute top-full mt-3 shadow-lg">
           {error}
         </div>
       )}
       {searchResults.length > 0 && (
-        <div className="flex flex-col gap-1 p-2 z-10 bg-white shadow-lg border-[0.5px] rounded-xl absolute top-full mt-3 w-102">
+        <div className="flex flex-col gap-1 p-2 z-10 bg-white shadow-lg border-[0.5px] rounded-xl absolute top-full mt-3 sm:w-102 w-80">
           {searchResults.map((result) => (
             <button
               key={result.id}

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const About = () => {
   return (
     <div className="w-screen flex justify-center">
-      <div className="w-175 flex flex-col gap-8 my-10 ">
+      <div className="max-w-175 px-5 flex flex-col gap-8 my-10 ">
         <motion.span
           initial={{
             x: -50,
@@ -23,7 +23,9 @@ const About = () => {
           }}
           className="flex flex-col gap-4"
         >
-          <h1 className="text-3xl font-bold">What is DegreePlanner?</h1>
+          <h1 className="sm:text-3xl text-2xl font-bold">
+            What is DegreePlanner?
+          </h1>
           <p className="text-base/8">
             DegreePlanner is a course planning tool designed to help McGill
             University students visualize and organize their academic journey.
@@ -49,7 +51,9 @@ const About = () => {
           }}
           className="flex flex-col gap-4"
         >
-          <h1 className="text-3xl font-bold">How to Use DegreePlanner?</h1>
+          <h1 className="sm:text-3xl text-2xl font-bold">
+            How to Use DegreePlanner?
+          </h1>
           <p className="text-base/8">
             Start by finding your program on the{" "}
             <Link href="/" className="underline">
@@ -79,7 +83,7 @@ const About = () => {
           }}
           className="flex flex-col gap-4"
         >
-          <h1 className="text-3xl font-bold">Disclaimer</h1>
+          <h1 className="sm:text-3xl text-2xl font-bold">Disclaimer</h1>
           <p className="text-base/8">
             DegreePlanner is a student-built tool created to assist with
             academic planning—it is{" "}
@@ -112,7 +116,7 @@ const About = () => {
           }}
           className="flex flex-col gap-4"
         >
-          <h1 className="text-3xl font-bold">Contact Us</h1>
+          <h1 className="sm:text-3xl text-2xl font-bold">Contact Us</h1>
           <p className="text-base/8">
             Have questions, suggestions, or feedback? We'd love to hear from
             you. Reach out to help improve DegreePlanner and make it even more

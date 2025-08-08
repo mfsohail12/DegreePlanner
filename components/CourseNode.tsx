@@ -76,8 +76,6 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
 
     const prereqs = parsePrereqs(prereqBooleanExp);
 
-    console.log({ prereqs });
-
     if (prereqsMet(prereqs)) {
       setIsSuggested(true);
     } else {
@@ -114,7 +112,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
         },
       }}
       title={courseTitle}
-      className={`w-44 border-[0.5px] rounded-full hover:shadow-lg ${
+      className={`sm:w-44 w-38 sm:text-base text-xs border-[0.5px] rounded-full hover:shadow-lg ${
         isCompleted
           ? "bg-green border-green-600"
           : isSuggested

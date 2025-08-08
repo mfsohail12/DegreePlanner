@@ -62,8 +62,8 @@ const RequiredGroups = ({
 
   return (
     <div>
-      <span className="flex gap-4 items-center mb-4">
-        <h1 className="text-3xl font-semibold">Required Courses</h1>
+      <span className="flex sm:flex-row flex-col gap-4 sm:items-center mb-4">
+        <h1 className="sm:text-3xl text-2xl font-semibold">Required Courses</h1>
         <span className="flex-1">
           <ProgressBar
             completedCredits={completedCredits}
