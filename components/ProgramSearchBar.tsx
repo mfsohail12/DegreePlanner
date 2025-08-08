@@ -54,7 +54,7 @@ const ProgramSearchBar = () => {
       <motion.div
         initial={{
           x: 0,
-          y: 20,
+          y: 40,
         }}
         animate={{
           x: 0,
@@ -62,13 +62,14 @@ const ProgramSearchBar = () => {
         }}
         transition={{
           type: "spring",
+          duration: 3,
         }}
         className="sm:w-102 w-80 flex items-center relative z-10 mt-6"
       >
         <IoIosSearch className="sm:text-2xl text-xl absolute left-3" />
         <input
           type="text"
-          className="w-102 indent-7 border-[0.5px] rounded-full sm:py-2 sm:px-3 px-2 py-1 shadow-lg bg-white"
+          className="w-102 indent-7 border-[0.5px] rounded-full py-2 px-3 shadow-lg bg-white focus:outline-none focus:ring-0"
           placeholder="Find Your Program"
           value={search}
           onChange={(event) => setSearch(event.target.value)}

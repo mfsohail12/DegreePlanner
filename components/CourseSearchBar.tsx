@@ -45,7 +45,7 @@ const CourseSearchBar = ({
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       searchCourse(search);
-    }, 300);
+    }, 50);
 
     return () => clearTimeout(delayDebounce);
   }, [search]);
@@ -55,7 +55,7 @@ const CourseSearchBar = ({
       <IoIosSearch className="sm:text-xl text-sm absolute left-3" />
       <input
         type="text"
-        className="w-full h-full text-xs sm:indent-7 indent-6 border-[0.5px] rounded-full sm:px-3 sm:py-2 px-2 py-1 bg-white"
+        className="w-full h-full sm:text-base text-xs sm:indent-7 indent-6 border-[0.5px] rounded-full sm:px-3 sm:py-2 px-2 py-1 bg-white"
         placeholder="Search for courses"
         value={search}
         onChange={(event) => setSearch(event.target.value)}

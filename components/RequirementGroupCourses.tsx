@@ -19,7 +19,7 @@ const RequirementGroupCourses = ({
   const [courseLimit, setCourseLimit] = useState<number>(1);
   const { completedCourses } = useCompletedCourses();
 
-  const fetchGroupCourses = async (
+  const fetchRequirementGroupCourses = async (
     requirementGroup: RequirementGroup,
     limitIncrease: number
   ) => {
@@ -62,16 +62,20 @@ const RequirementGroupCourses = ({
   };
 
   useEffect(() => {
-    fetchGroupCourses(requirementGroup, 1);
+    fetchRequirementGroupCourses(requirementGroup, 1);
   }, []);
 
+  // probably a better way to do this
   useEffect(() => {
-    fetchGroupCourses(requirementGroup, courseLimit);
+    fetchRequirementGroupCourses(requirementGroup, courseLimit);
   }, [courseLimit]);
 
   useEffect(() => {
     if (requirementCourses.length == 0) return;
-    if (completedCourses.length == 0) setCompletedCredits(0);
+    if (completedCourses.length == 0) {
+      setCompletedCredits(0);
+      return;
+    }
 
     const fetchCompletedCredits = async () => {
       const completedRequirementCourses = requirementCourses.filter((c) =>
@@ -86,9 +90,8 @@ const RequirementGroupCourses = ({
 
         if (error) throw error;
 
-        const credits = data.map((item) => item.credits);
-
-        setCompletedCredits(credits.reduce((acc, curr) => (acc += curr), 0));
+        const totalCredits = data.reduce((acc, item) => acc + item.credits, 0);
+        setCompletedCredits(totalCredits);
       } catch (error) {
         console.log(error);
         throw error;

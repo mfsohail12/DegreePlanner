@@ -10,7 +10,7 @@ export default function Home() {
         <motion.h1
           initial={{
             x: 0,
-            y: 20,
+            y: 40,
           }}
           animate={{
             x: 0,
@@ -18,6 +18,7 @@ export default function Home() {
           }}
           transition={{
             type: "spring",
+            duration: 3,
           }}
           className="font-extrabold sm:text-5xl text-3xl text-shadow-lg z-10"
         >
@@ -28,16 +29,17 @@ export default function Home() {
         <motion.div
           initial={{
             x: 0,
-            y: 20,
+            y: 40,
             rotate: "-15deg",
           }}
           animate={{
             x: 0,
             y: 0,
-            rotate: ["15deg", "0deg"],
+            rotate: ["-15deg", "8deg", "0deg"],
           }}
           transition={{
-            type: "spring",
+            type: "keyframes",
+            duration: 1,
           }}
           className="sm:absolute relative -bottom-5 sm:-left-35 sm:-bottom-22 flex justify-center"
         >

@@ -8,6 +8,7 @@ import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { RiResetLeftLine } from "react-icons/ri";
 import { AnimatePresence, motion } from "framer-motion";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const [search, setSearch] = useState<string>("");
@@ -20,8 +21,9 @@ const Navbar = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/") {
+    if (pathname === "/" || pathname.startsWith("/course")) {
       setSearch("");
+      setSearchResults([]);
       setShowCompletedCoursesModal(false);
     }
   }, [pathname]);
@@ -54,13 +56,13 @@ const Navbar = () => {
         pathname.startsWith("/completed-courses") ? (
           <span className="flex items-center sm:gap-3 gap-2">
             <button
-              className="rounded-full h-7 sm:h-auto sm:px-4 sm:py-2 px-2 sm:text-sm text-[0.5rem] bg-foreground hover:opacity-90 text-light-grey font-semibold"
+              className="rounded-full h-7 sm:h-auto sm:px-4 sm:py-2 px-5 sm:text-sm bg-foreground hover:opacity-90 text-light-grey font-semibold"
               onClick={() => setShowCompletedCoursesModal(true)}
             >
-              {window.innerWidth >= 640
-                ? "View Completed Courses"
-                : "Completed"}
+              <FaRegCheckCircle className="sm:hidden visible text-base" />
+              <p className="sm:inline hidden">View Completed Courses</p>
             </button>
+
             <CourseSearchBar
               search={search}
               setSearch={setSearch}
