@@ -27,7 +27,6 @@ const ProgramInformation = ({
       if (error) throw error;
 
       if (data.length == 0) {
-        console.log("came here");
         setCompletedCredits(0);
         return;
       }
@@ -55,7 +54,10 @@ const ProgramInformation = ({
   }, []);
 
   useEffect(() => {
-    if (completedCourses.length == 0) return;
+    if (completedCourses.length == 0) {
+      setCompletedCredits(0);
+      return;
+    }
 
     fetchCompletedCredits(programId);
   }, [completedCourses]);
