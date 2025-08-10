@@ -35,7 +35,7 @@ export default function Home() {
           animate={{
             x: 0,
             y: 0,
-            rotate: ["-15deg", "8deg", "0deg"],
+            rotate: ["-15deg", "5deg", "0deg"],
           }}
           transition={{
             type: "keyframes",

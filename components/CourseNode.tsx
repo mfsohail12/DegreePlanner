@@ -10,25 +10,27 @@ import { motion } from "framer-motion";
 
 const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
-  const [prereqBooleanExp, setPrereqBooleanExp] = useState<string | null>(null);
+  const [prereqsLogical, setPrereqsLogical] = useState<any>(undefined);
   const [isSuggested, setIsSuggested] = useState<boolean>(false);
   const [courseTitle, setCourseTitle] = useState<string>(courseCode);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchPrereqBool = async (courseCode: CourseCode) => {
+    const fetchPrereqsLogical = async (courseCode: CourseCode) => {
       try {
         setLoading(true);
         const { data, error } = await supabase
           .from("course")
-          .select("prerequisites_bool_exp")
+          .select("prerequisites_logical")
           .eq("course_code", courseCode);
 
         if (error) throw error;
 
         if (!data) return;
-        else setPrereqBooleanExp(data[0].prerequisites_bool_exp);
+        else {
+          setPrereqsLogical(data[0].prerequisites_logical);
+        }
       } catch (error) {
         console.log(error);
         throw error;
@@ -53,35 +55,42 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
       }
     };
 
-    fetchPrereqBool(courseCode);
+    fetchPrereqsLogical(courseCode);
     fetchCourseTitle(courseCode);
   }, []);
 
   useEffect(() => {
-    if (loading || prereqBooleanExp === null) return;
+    if (loading || prereqsLogical === undefined) return;
 
-    const prereqsMet = (prereqs: CourseCode[][]) => {
-      for (let i = 0; i < prereqs.length; i++) {
-        for (let j = 0; j < prereqs[i].length; j++) {
-          const course = prereqs[i][j];
-
-          if (completedCourses.includes(course)) {
-            break;
-          }
-          if (j == prereqs[i].length - 1) return false;
-        }
+    const prereqsMet = (logical: any) => {
+      if (logical === null) return true;
+      if (typeof logical === "string") {
+        if (completedCourses.includes(logical)) return true;
+        return false;
       }
-      return true;
+
+      if (logical.operator === "AND") {
+        for (let item of logical.groups) {
+          if (!prereqsMet(item)) return false;
+        }
+
+        return true;
+      }
+      if (logical.operator === "OR") {
+        for (let item of logical.groups) {
+          if (prereqsMet(item)) return true;
+        }
+
+        return false;
+      }
+
+      throw new Error("invalid operator: " + logical.operator);
     };
 
-    const prereqs = parsePrereqs(prereqBooleanExp);
+    setIsSuggested(prereqsMet(prereqsLogical));
+  }, [prereqsLogical, completedCourses]);
 
-    if (prereqsMet(prereqs)) {
-      setIsSuggested(true);
-    } else {
-      setIsSuggested(false);
-    }
-  }, [prereqBooleanExp, completedCourses]);
+  console.log({ courseCode, isSuggested });
 
   const isCompleted = completedCourses.includes(courseCode);
 

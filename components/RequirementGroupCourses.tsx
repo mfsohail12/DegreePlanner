@@ -122,17 +122,9 @@ const RequirementGroupCourses = ({
         <p className="text-xs mt-1">Note: {requirementGroup.note}</p>
       )}
       <div className="flex flex-wrap gap-x-14 gap-y-10 justify-center items-center mt-6">
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
-        <SkeletonCourseNode />
+        {Array.from({ length: courseLimit * 9 }).map((_, index) => (
+          <SkeletonCourseNode key={index} />
+        ))}
       </div>
     </div>
   ) : (

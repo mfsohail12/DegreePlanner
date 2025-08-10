@@ -30,7 +30,7 @@ declare interface Course {
   faculty_name: string;
   credits: number;
   prerequisites?: string;
-  prerequisites_bool_exp?: string;
+  prerequisites_logical?: any;
   restrictions?: string;
 }
 
