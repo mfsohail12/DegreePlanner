@@ -12,7 +12,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const [search, setSearch] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<CourseCode[]>([]);
   const [showCompletedCoursesModal, setShowCompletedCoursesModal] =
     useState<boolean>(false);
   const searchResultsRef = useRef<HTMLDivElement | null>(null);
@@ -87,7 +87,7 @@ const Navbar = () => {
           className="w-screen max-h-1/4 overflow-y-scroll overscroll-contain z-100 py-7 px-4 bg-white border-b-[0.5px] shadow-lg flex gap-8 flex-wrap items-center justify-center fixed top-[60px] left-0"
         >
           {searchResults.map((result) => (
-            <CourseNode courseCode={result} />
+            <CourseNode key={result} courseCode={result} />
           ))}
         </div>
       )}

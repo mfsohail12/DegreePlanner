@@ -1,7 +1,6 @@
 "use client";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 import { convertCourseCode } from "@/lib/course";
-import { parsePrereqs } from "@/lib/parser";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -89,8 +88,6 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
 
     setIsSuggested(prereqsMet(prereqsLogical));
   }, [prereqsLogical, completedCourses]);
-
-  console.log({ courseCode, isSuggested });
 
   const isCompleted = completedCourses.includes(courseCode);
 
