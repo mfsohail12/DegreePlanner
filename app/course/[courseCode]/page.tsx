@@ -1,70 +1,46 @@
-"use client";
 import CourseNode from "@/components/CourseNode";
-import DOMPurify from "dompurify";
 import { convertCourseCode, getCoursesFromString } from "@/lib/course";
 import { LuExternalLink } from "react-icons/lu";
 import { supabase } from "@/lib/supabase";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { CgArrowLongLeft } from "react-icons/cg";
-import { useProgram } from "@/context/ProgramContext";
-import Spinner from "@/components/Spinner";
+import BackToProgramButton from "@/components/BackToProgramButton";
+import CourseDescription from "@/components/CourseDescription";
+import { notFound } from "next/navigation";
 
-const page = () => {
-  const [course, setCourse] = useState<Course | null>(null);
-  const [prerequisites, setPrerequisites] = useState<string[]>([]);
-  const { courseCode } = useParams<{ courseCode: string }>();
-  const { program } = useProgram();
-  const router = useRouter();
+const page = async ({
+  params,
+}: {
+  params: Promise<{ courseCode: string }>;
+}) => {
+  const { courseCode } = await params;
 
-  useEffect(() => {
-    const fetchCourseInformation = async (courseCode: string) => {
-      try {
-        const { data, error } = await supabase
-          .from("course")
-          .select()
-          .eq("course_code", courseCode);
+  const fetchCourseInformation = async (courseCode: CourseCode) => {
+    try {
+      const { data, error } = await supabase
+        .from("course")
+        .select()
+        .eq("course_code", courseCode);
 
-        if (error) throw error;
+      if (error) throw error;
 
-        if (!data) throw new Error(`The course ${courseCode} was not found`);
+      if (data.length === 0) notFound();
 
-        setCourse({
-          ...data[0],
-          course_description: DOMPurify.sanitize(data[0].course_description),
-        });
+      return data[0];
+    } catch (error) {
+      console.log("There was an error fetching course information ", error);
+      throw error;
+    }
+  };
 
-        if (data[0].prerequisites) {
-          setPrerequisites(getCoursesFromString(data[0].prerequisites));
-        }
-      } catch (error) {
-        console.log("There was an error fetching course information ", error);
-        throw error;
-      }
-    };
-
-    fetchCourseInformation(convertCourseCode(courseCode, false));
-  }, []);
-
-  if (!course) {
-    return (
-      <div className="flex justify-center items-center w-screen flex-1">
-        <Spinner className="text-5xl" />
-      </div>
-    );
-  }
+  const course: Course = await fetchCourseInformation(
+    convertCourseCode(courseCode, false)
+  );
+  const prerequisites: CourseCode[] = course.prerequisites
+    ? getCoursesFromString(course.prerequisites)
+    : [];
 
   return (
     <div className="w-4/5 pt-10 pb-20 px-10">
-      <button
-        className="flex items-center gap-4 mb-5 hover:text-slate-500"
-        onClick={() =>
-          program ? router.push(`/program/${program.id}`) : router.push("/")
-        }
-      >
-        <CgArrowLongLeft className="text-4xl" />
-        <p className="">Back to {program ? "program" : "home"}</p>
-      </button>
+      <BackToProgramButton />
       <span className="flex gap-3 items-center mb-3">
         <h1 className="font-bold text-3xl">
           {course.course_code}: {course.course_name}
@@ -85,16 +61,7 @@ const page = () => {
           {course.faculty_name}
         </div>
       </span>
-      {course.course_description && (
-        <>
-          <h2 className="mt-8 mb-4 text-2xl font-semibold">
-            Course Description
-          </h2>
-          <p
-            dangerouslySetInnerHTML={{ __html: course.course_description }}
-          ></p>
-        </>
-      )}
+      <CourseDescription course={course} />
       {course.restrictions && (
         <p className="mt-5 text-red-700">Restrictions: {course.restrictions}</p>
       )}
