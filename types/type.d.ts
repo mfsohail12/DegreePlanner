@@ -6,6 +6,7 @@ declare interface Program {
   degree: string;
   faculty: string;
   total_credits: number;
+  link: string;
 }
 
 declare interface RequirementGroup {

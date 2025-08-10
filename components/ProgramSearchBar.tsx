@@ -44,7 +44,7 @@ const ProgramSearchBar = () => {
 
     const delayDebounce = setTimeout(() => {
       searchProgram(search);
-    }, 100);
+    }, 50);
 
     return () => clearTimeout(delayDebounce);
   }, [search]);

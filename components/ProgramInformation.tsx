@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useProgram } from "@/context/ProgramContext";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 import { motion } from "framer-motion";
+import { LuExternalLink } from "react-icons/lu";
 
 const ProgramInformation = ({
   programId,
@@ -85,9 +86,14 @@ const ProgramInformation = ({
     >
       <motion.h1
         variants={itemVariants}
-        className="font-bold sm:text-3xl text-xl mb-3"
+        className="mb-3 flex gap-3 items-center"
       >
-        {programInfo.program_name} ({programInfo.total_credits} Credits)
+        <p className="font-bold sm:text-3xl text-xl">
+          {programInfo.program_name} ({programInfo.total_credits} Credits)
+        </p>
+        <a href={programInfo.link} target="_blank">
+          <LuExternalLink className="text-4xl" />
+        </a>
       </motion.h1>
       <motion.span
         variants={itemVariants}
