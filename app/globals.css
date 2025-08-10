@@ -28,3 +28,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+p a {
+  text-decoration: underline;
+}
+
+p a:hover {
+  opacity: 80%;
+}

@@ -1,5 +1,6 @@
 "use client";
 import CourseNode from "@/components/CourseNode";
+import DOMPurify from "dompurify";
 import { convertCourseCode, getCoursesFromString } from "@/lib/course";
 import { LuExternalLink } from "react-icons/lu";
 import { supabase } from "@/lib/supabase";
@@ -28,12 +29,13 @@ const page = () => {
 
         if (!data) throw new Error(`The course ${courseCode} was not found`);
 
-        setCourse(data[0]);
+        setCourse({
+          ...data[0],
+          course_description: DOMPurify.sanitize(data[0].course_description),
+        });
 
-        if (data[0].prerequisites_bool_exp) {
-          setPrerequisites(
-            getCoursesFromString(data[0].prerequisites_bool_exp)
-          );
+        if (data[0].prerequisites) {
+          setPrerequisites(getCoursesFromString(data[0].prerequisites));
         }
       } catch (error) {
         console.log("There was an error fetching course information ", error);
@@ -83,8 +85,16 @@ const page = () => {
           {course.faculty_name}
         </div>
       </span>
-      <h2 className="mt-8 mb-4 text-2xl font-semibold">Course Description</h2>
-      <p>{course.course_description}</p>
+      {course.course_description && (
+        <>
+          <h2 className="mt-8 mb-4 text-2xl font-semibold">
+            Course Description
+          </h2>
+          <p
+            dangerouslySetInnerHTML={{ __html: course.course_description }}
+          ></p>
+        </>
+      )}
       {course.restrictions && (
         <p className="mt-5 text-red-700">Restrictions: {course.restrictions}</p>
       )}
