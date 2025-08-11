@@ -11,11 +11,15 @@ const ComplementaryGroups = ({
         Complementary Courses
       </h1>
 
-      <div className="flex flex-wrap gap-y-7 justify-between">
+      <div className="flex flex-wrap gap-y-7 justify-between items-center">
         {complementaryGroups &&
           complementaryGroups.length > 0 &&
           complementaryGroups.map((group) => (
-            <RequirementGroupCourses key={group.id} requirementGroup={group} />
+            <RequirementGroupCourses
+              key={group.id}
+              requirementGroup={group}
+              showProgress={true}
+            />
           ))}
       </div>
     </div>

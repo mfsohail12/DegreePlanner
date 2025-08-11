@@ -71,14 +71,19 @@ const RequiredGroups = ({
           />
         </span>
       </span>
-      <div className="flex flex-wrap gap-y-7 justify-between">
+      <div className="flex flex-wrap gap-y-7 justify-between items-center">
         {requiredGroups && requiredGroups.length > 1 ? (
           requiredGroups.map((group) => (
-            <RequirementGroupCourses key={group.id} requirementGroup={group} />
+            <RequirementGroupCourses
+              key={group.id}
+              requirementGroup={group}
+              showProgress={true}
+            />
           ))
         ) : (
           <RequirementGroupCourses
-            requirementGroup={{ ...requiredGroups[0], group_name: "" }}
+            requirementGroup={requiredGroups[0]}
+            showProgress={false}
           />
         )}
       </div>

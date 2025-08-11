@@ -8,8 +8,10 @@ import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 
 const RequirementGroupCourses = ({
   requirementGroup,
+  showProgress,
 }: {
   requirementGroup: RequirementGroup;
+  showProgress: boolean;
 }) => {
   const [requirementCourses, setRequirementCourses] = useState<CourseCode[]>(
     []
@@ -38,9 +40,10 @@ const RequirementGroupCourses = ({
         setRequirementCourses(data.map((item) => item.course_code));
       } else {
         const { data, error } = await supabase
-          .rpc("get_courses", {
+          .rpc("get_dynamic_group_courses", {
             min_course_level: requirementGroup.min_course_level,
             max_course_level: requirementGroup.max_course_level,
+            requirement_group_id: requirementGroup.id,
             department_filters: requirementGroup.department_filter,
           })
           .limit(9 * limitIncrease);
@@ -71,6 +74,7 @@ const RequirementGroupCourses = ({
   }, [courseLimit]);
 
   useEffect(() => {
+    if (!showProgress) return;
     if (requirementCourses.length == 0) return;
     if (completedCourses.length == 0) {
       setCompletedCredits(0);
@@ -78,20 +82,41 @@ const RequirementGroupCourses = ({
     }
 
     const fetchCompletedCredits = async () => {
-      const completedRequirementCourses = requirementCourses.filter((c) =>
-        completedCourses.includes(c)
-      );
-
       try {
-        const { data, error } = await supabase
-          .from("course")
-          .select("credits")
-          .in("course_code", completedRequirementCourses);
+        if (!requirementGroup.is_dynamic) {
+          const completedRequiredCourses = requirementCourses.filter((course) =>
+            completedCourses.includes(course)
+          );
 
-        if (error) throw error;
+          const { data, error } = await supabase
+            .from("course")
+            .select("credits")
+            .eq("course_code", completedRequiredCourses);
 
-        const totalCredits = data.reduce((acc, item) => acc + item.credits, 0);
-        setCompletedCredits(totalCredits);
+          if (error) throw error;
+
+          const totalCredits = data.reduce(
+            (acc: number, item: { credits: number }) => acc + item.credits,
+            0
+          );
+          setCompletedCredits(totalCredits);
+        } else {
+          const { data, error } = await supabase
+            .rpc("get_dynamic_group_courses", {
+              min_course_level: requirementGroup.min_course_level,
+              max_course_level: requirementGroup.max_course_level,
+              requirement_group_id: requirementGroup.id,
+              department_filters: requirementGroup.department_filter,
+            })
+            .filter("course_code", "in", `(${completedCourses.toString()})`);
+
+          if (error) throw error;
+
+          const totalCredits = data
+            .map((course: Course) => course.credits)
+            .reduce((acc: number, item: number) => acc + item, 0);
+          setCompletedCredits(totalCredits);
+        }
       } catch (error) {
         console.log(error);
         throw error;
@@ -106,13 +131,12 @@ const RequirementGroupCourses = ({
       {requirementGroup.group_name && (
         <h2 className="text-xl font-semibold">{requirementGroup.group_name}</h2>
       )}
-      {requirementGroup.min_credits !== 0 &&
-        requirementGroup.category_type !== "required" && (
-          <ProgressBar
-            completedCredits={0}
-            totalCredits={requirementGroup.min_credits}
-          />
-        )}
+      {requirementGroup.min_credits !== 0 && showProgress && (
+        <ProgressBar
+          completedCredits={0}
+          totalCredits={requirementGroup.min_credits}
+        />
+      )}
       {requirementGroup.group_description && (
         <p className="sm:text-base text-sm font-semibold">
           {requirementGroup.group_description}
@@ -128,23 +152,16 @@ const RequirementGroupCourses = ({
       </div>
     </div>
   ) : (
-    <div
-      className={`${
-        requirementCourses && requirementCourses?.length <= 4
-          ? "sm:w-49/100 w-full"
-          : "w-full"
-      } pt-5 pb-15 sm:px-7 px-5 border-[0.5px] rounded-xl relative`}
-    >
+    <div className="w-full pt-5 pb-15 sm:px-7 px-5 border-[0.5px] rounded-xl relative">
       {requirementGroup.group_name && (
         <h2 className="text-xl font-semibold">{requirementGroup.group_name}</h2>
       )}
-      {requirementGroup.min_credits !== 0 &&
-        requirementGroup.category_type !== "required" && (
-          <ProgressBar
-            completedCredits={completedCredits}
-            totalCredits={requirementGroup.min_credits}
-          />
-        )}
+      {requirementGroup.min_credits !== 0 && showProgress && (
+        <ProgressBar
+          completedCredits={completedCredits}
+          totalCredits={requirementGroup.min_credits}
+        />
+      )}
       {requirementGroup.group_description && (
         <p className="sm:text-base text-sm font-semibold">
           {requirementGroup.group_description}

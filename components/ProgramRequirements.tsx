@@ -1,10 +1,7 @@
 import { supabase } from "@/lib/supabase";
-import ProgressBar from "./ProgressBar";
-import RequirementGroupCourses from "./RequirementGroupCourses";
 import RequiredGroups from "./RequiredGroups";
 import ComplementaryGroups from "./ComplementaryGroups";
 import { FaRegCheckCircle } from "react-icons/fa";
-import { notFound } from "next/navigation";
 
 const ProgramRequirements = async ({ programId }: { programId: string }) => {
   const fetchProgramRequirements = async (programId: string) => {
@@ -42,10 +39,10 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
     <div className="flex flex-col gap-10">
       {/* legend */}
       <div className="font-semibold text-sm flex flex-wrap gap-5 items-center">
-        <div className="rounded-full bg-green py-1 px-2 border-[0.5px]">
+        <div className="rounded-full bg-green text-green-600 border-green-600 py-1 px-2 border-[0.5px]">
           Completed
         </div>
-        <div className="rounded-full bg-yellow py-1 px-2 border-[0.5px]">
+        <div className="rounded-full bg-yellow text-yellow-600 border-yellow-600 py-1 px-2 border-[0.5px]">
           Suggested
         </div>
         <div className="rounded-full bg-light-grey py-1 px-2 border-[0.5px]">
@@ -61,10 +58,7 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
       <RequiredGroups requiredGroups={requiredGroups} programId={programId} />
 
       {/* Complementary courses */}
-      <ComplementaryGroups
-        complementaryGroups={complementaryGroups}
-        programId={programId}
-      />
+      <ComplementaryGroups complementaryGroups={complementaryGroups} />
     </div>
   );
 };
