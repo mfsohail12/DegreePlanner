@@ -28,7 +28,8 @@ const ProgramSearchBar = () => {
       const { data, error } = await supabase
         .from("program")
         .select("program_name, id")
-        .ilike("program_name", searchPattern);
+        .ilike("program_name", searchPattern)
+        .limit(6);
 
       if (error)
         setError(

@@ -102,11 +102,12 @@ const About = () => {
           </h1>
           <p className="text-base/8">
             DegreePlanner is a student-built tool created to assist with
-            academic planning—it is{" "}
-            <strong>not an official McGill resource</strong>. While we strive to
-            keep program information up to date, there may be discrepancies or
-            changes that aren't reflected in the application. Always verify your
-            course selections and degree progress with an academic advisor or{" "}
+            academic planning—
+            <strong>it is not an official McGill resource</strong>. While we
+            strive to keep program information up to date, there may be
+            discrepancies or changes that aren't reflected in the application.
+            Always verify your course selections and degree progress with an
+            academic advisor or{" "}
             <a
               href="https://coursecatalogue.mcgill.ca/en/"
               className="underline font-bold"
