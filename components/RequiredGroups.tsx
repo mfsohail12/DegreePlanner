@@ -23,39 +23,45 @@ const RequiredGroups = ({
   const [completedCredits, setCompletedCredits] = useState<number>(0);
   const { completedCourses } = useCompletedCourses();
 
+  const fetchCompletedCredits = async (programId: string) => {
+    try {
+      const { data, error } = await supabase.rpc(
+        "get_all_required_program_courses",
+        { prog_id: parseInt(programId) }
+      );
+
+      if (error) throw error;
+
+      const completedRequiredCourses = data.filter((course: Course) =>
+        completedCourses.includes(course.course_code)
+      );
+
+      console.log({ completedRequiredCourses, data, programId });
+
+      setCompletedCredits(
+        completedRequiredCourses.reduce(
+          (acc: number, curr: Course) => acc + curr.credits,
+          0
+        )
+      );
+    } catch (error) {
+      console.log(
+        "There was an error fetching completed credits for required groups: ",
+        error
+      );
+      throw error;
+    }
+  };
+
   useEffect(() => {
-    const fetchCompletedCredits = async (programId: string) => {
-      try {
-        const { data, error } = await supabase.rpc(
-          "get_all_required_program_courses",
-          { program_id: parseInt(programId) }
-        );
+    if (completedCourses.length > 0) fetchCompletedCredits(programId);
+  }, []);
 
-        if (error) throw error;
-
-        if (!data) {
-          setCompletedCredits(0);
-          return;
-        }
-
-        const completedRequiredCourses = data.filter((course: Course) =>
-          completedCourses.includes(course.course_code)
-        );
-
-        setCompletedCredits(
-          completedRequiredCourses.reduce(
-            (acc: number, curr: Course) => acc + curr.credits,
-            0
-          )
-        );
-      } catch (error) {
-        console.log(
-          "There was an error fetching completed credits for required groups: ",
-          error
-        );
-        throw error;
-      }
-    };
+  useEffect(() => {
+    if (completedCourses.length == 0) {
+      setCompletedCredits(0);
+      return;
+    }
 
     fetchCompletedCredits(programId);
   }, [completedCourses]);

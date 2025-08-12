@@ -22,7 +22,7 @@ const ProgramInformation = ({
   const fetchCompletedCredits = async (programId: string) => {
     try {
       const { data, error } = await supabase.rpc("get_all_program_courses", {
-        program_id: programId,
+        prog_id: programId,
       });
 
       if (error) throw error;

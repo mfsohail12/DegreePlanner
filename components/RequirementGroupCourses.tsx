@@ -91,7 +91,7 @@ const RequirementGroupCourses = ({
           const { data, error } = await supabase
             .from("course")
             .select("credits")
-            .eq("course_code", completedRequiredCourses);
+            .in("course_code", completedRequiredCourses);
 
           if (error) throw error;
 
@@ -99,6 +99,7 @@ const RequirementGroupCourses = ({
             (acc: number, item: { credits: number }) => acc + item.credits,
             0
           );
+
           setCompletedCredits(totalCredits);
         } else {
           const { data, error } = await supabase
