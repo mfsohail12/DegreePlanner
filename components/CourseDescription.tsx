@@ -8,10 +8,13 @@ const CourseDescription = ({ course }: { course: Course }) => {
     <div>
       {course.course_description && (
         <>
-          <h2 className="mt-8 mb-4 text-2xl font-semibold">
+          <h2 className="mt-8 mb-4 sm:text-2xl text-xl font-semibold">
             Course Description
           </h2>
-          <p dangerouslySetInnerHTML={{ __html: clean }}></p>
+          <p
+            dangerouslySetInnerHTML={{ __html: clean }}
+            className="sm:text-base text-sm"
+          ></p>
         </>
       )}
     </div>

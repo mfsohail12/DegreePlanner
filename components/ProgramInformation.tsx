@@ -92,7 +92,7 @@ const ProgramInformation = ({
           {programInfo.program_name} ({programInfo.total_credits} Credits)
         </p>
         <a href={programInfo.link} target="_blank">
-          <LuExternalLink className="text-4xl" />
+          <LuExternalLink className="sm:text-4xl text-2xl" />
         </a>
       </motion.h1>
       <motion.span
