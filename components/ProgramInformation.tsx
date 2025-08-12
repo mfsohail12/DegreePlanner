@@ -19,7 +19,7 @@ const ProgramInformation = ({
   const [completedCredits, setCompletedCredits] = useState<number>(0);
   const { setProgram } = useProgram();
   const { completedCourses } = useCompletedCourses();
-  const { programProgress } = useProgramProgress();
+  const { programProgress, setProgramProgress } = useProgramProgress();
 
   const calculateCompletedCredits = () => {
     setCompletedCredits(
@@ -35,6 +35,10 @@ const ProgramInformation = ({
   useEffect(() => {
     calculateCompletedCredits();
   }, [programProgress]);
+
+  useEffect(() => {
+    if (completedCourses.length == 0) setProgramProgress([]);
+  }, [completedCourses]);
 
   // const fetchCompletedCredits = async (programId: string) => {
   //   try {
@@ -139,7 +143,7 @@ const ProgramInformation = ({
         {programInfo.program_description}
       </motion.p>
       <motion.div variants={itemVariants}>
-        <BscRequirements />
+        {/Bachelor of Science/.test(programInfo.degree) && <BscRequirements />}
       </motion.div>
     </motion.div>
   );
