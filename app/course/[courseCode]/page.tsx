@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import BackToProgramButton from "@/components/BackToProgramButton";
 import CourseDescription from "@/components/CourseDescription";
 import { notFound } from "next/navigation";
+import MarkCompleteButton from "@/components/MarkCompleteButton";
 
 const page = async ({
   params,
@@ -41,6 +42,9 @@ const page = async ({
   return (
     <div className="sm:w-4/5 w-full pt-10 pb-20 sm:px-10 px-5">
       <BackToProgramButton />
+      <div className="absolute right-10 top-25">
+        <MarkCompleteButton courseCode={convertCourseCode(courseCode, false)} />
+      </div>
       <span className="flex gap-3 items-center mb-3">
         <h1 className="font-bold sm:text-3xl text-2xl">
           {course.course_code}: {course.course_name}
