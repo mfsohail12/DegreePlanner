@@ -3,8 +3,22 @@ import Link from "next/link";
 import { IoMdMail } from "react-icons/io";
 import { FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 
 const About = () => {
+  const disclaimerRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
+  const showDisclaimer = searchParams.get("show_disclaimer") === "true";
+
+  useEffect(() => {
+    if (showDisclaimer) {
+      disclaimerRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  });
+
   return (
     <div className="w-screen flex justify-center">
       <div className="max-w-175 px-5 flex flex-col gap-8 my-10 ">
@@ -83,7 +97,9 @@ const About = () => {
           }}
           className="flex flex-col gap-4"
         >
-          <h1 className="sm:text-3xl text-2xl font-bold">Disclaimer</h1>
+          <h1 ref={disclaimerRef} className="sm:text-3xl text-2xl font-bold">
+            Disclaimer
+          </h1>
           <p className="text-base/8">
             DegreePlanner is a student-built tool created to assist with
             academic planning—it is{" "}

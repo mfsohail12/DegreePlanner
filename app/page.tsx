@@ -2,8 +2,11 @@
 import ProgramSearchBar from "@/components/ProgramSearchBar";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="w-screen flex flex-1 justify-center items-center">
       <div className="relative p-3 flex flex-col justify-center items-center">
@@ -54,6 +57,12 @@ export default function Home() {
           />
         </motion.div>
       </div>
+      <button
+        className="font-semibold underline fixed left-47/100 bottom-10 hover:opacity-90 hover:cursor-pointer"
+        onClick={() => router.push("/about?show_disclaimer=true")}
+      >
+        Disclaimer
+      </button>
     </div>
   );
 }
