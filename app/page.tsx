@@ -3,9 +3,16 @@ import ProgramSearchBar from "@/components/ProgramSearchBar";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useProgramProgress } from "@/context/ProgramProgressContext";
 
 export default function Home() {
   const router = useRouter();
+  const { setProgramProgress } = useProgramProgress();
+
+  useEffect(() => {
+    setProgramProgress([]);
+  }, []);
 
   return (
     <div className="w-screen flex flex-1 justify-center items-center">

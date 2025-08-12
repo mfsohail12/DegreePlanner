@@ -36,8 +36,6 @@ const RequiredGroups = ({
         completedCourses.includes(course.course_code)
       );
 
-      console.log({ completedRequiredCourses, data, programId });
-
       setCompletedCredits(
         completedRequiredCourses.reduce(
           (acc: number, curr: Course) => acc + curr.credits,

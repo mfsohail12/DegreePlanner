@@ -5,6 +5,8 @@ import ProgressBar from "./ProgressBar";
 import CourseNode from "./CourseNode";
 import SkeletonCourseNode from "./SkeletonCourseNode";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
+import { useProgramProgress } from "@/context/ProgramProgressContext";
+import { filter } from "motion/react-client";
 
 const RequirementGroupCourses = ({
   requirementGroup,
@@ -20,6 +22,7 @@ const RequirementGroupCourses = ({
   const [completedCredits, setCompletedCredits] = useState<number>(0);
   const [courseLimit, setCourseLimit] = useState<number>(1);
   const { completedCourses } = useCompletedCourses();
+  const { programProgress, setProgramProgress } = useProgramProgress();
 
   const fetchRequirementGroupCourses = async (
     requirementGroup: RequirementGroup,
@@ -74,7 +77,6 @@ const RequirementGroupCourses = ({
   }, [courseLimit]);
 
   useEffect(() => {
-    if (!showProgress) return;
     if (requirementCourses.length == 0) return;
     if (completedCourses.length == 0) {
       setCompletedCredits(0);
@@ -126,6 +128,20 @@ const RequirementGroupCourses = ({
 
     fetchCompletedCredits();
   }, [requirementCourses, completedCourses]);
+
+  useEffect(() => {
+    const filtered = programProgress.filter(
+      (gp) => gp.id != requirementGroup.id
+    ); // filter out progress if already exists
+    const groupProgress = {
+      id: requirementGroup.id,
+      progress:
+        completedCredits > requirementGroup.min_credits
+          ? requirementGroup.min_credits
+          : completedCredits,
+    };
+    setProgramProgress([...filtered, groupProgress]);
+  }, [completedCredits]);
 
   return loading ? (
     <div className={`w-full pt-5 pb-10 px-7 border-[0.5px] rounded-xl`}>
