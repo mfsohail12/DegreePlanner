@@ -33,19 +33,15 @@ const MarkCompleteButton = ({ courseCode }: { courseCode: CourseCode }) => {
 
   return (
     <button
-      className={`flex border-green-600 items-center gap-2 rounded-full border px-3 font-semibold py-1 ${
-        completed ? "bg-green" : "bg-white"
-      }`}
+      className="flex items-center gap-2 rounded-full border px-3 font-semibold py-1 bg-white"
       onClick={handleClick}
     >
       {completed ? (
-        <FaCheckCircle className="text-green-600 text-md" />
+        <FaCheckCircle className="text-md" />
       ) : (
-        <FaRegCheckCircle className="text-green-600 text-md" />
+        <FaRegCheckCircle className="text-md" />
       )}
-      <p className="text-green-600">
-        {completed ? "Completed" : "Mark as Complete"}
-      </p>
+      <p>{completed ? "Completed" : "Mark as Complete"}</p>
     </button>
   );
 };

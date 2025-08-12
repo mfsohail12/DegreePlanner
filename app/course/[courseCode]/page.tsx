@@ -1,5 +1,8 @@
 import CourseNode from "@/components/CourseNode";
-import { convertCourseCode, getCoursesFromString } from "@/lib/course";
+import {
+  convertCourseCode,
+  getCoursesFromLogicalPrerequisites,
+} from "@/lib/course";
 import { LuExternalLink } from "react-icons/lu";
 import { supabase } from "@/lib/supabase";
 import BackToProgramButton from "@/components/BackToProgramButton";
@@ -35,8 +38,8 @@ const page = async ({
   const course: Course = await fetchCourseInformation(
     convertCourseCode(courseCode, false)
   );
-  const prerequisites: CourseCode[] = course.prerequisites
-    ? getCoursesFromString(course.prerequisites)
+  const prerequisites: CourseCode[] = course.prerequisites_logical
+    ? getCoursesFromLogicalPrerequisites(course.prerequisites_logical)
     : [];
 
   return (
