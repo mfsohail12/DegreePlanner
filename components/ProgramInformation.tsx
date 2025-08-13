@@ -22,7 +22,11 @@ const ProgramInformation = ({
 
   const calculateCompletedCredits = () => {
     setCompletedCredits(
-      programProgress.reduce((acc: number, item: any) => acc + item.progress, 0)
+      programProgress.reduce(
+        (acc: number, item: { id: number; progress: number }) =>
+          acc + item.progress,
+        0
+      )
     );
   };
 

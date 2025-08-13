@@ -32,7 +32,7 @@ const Navbar = () => {
     const handler = (event: MouseEvent) => {
       if (
         searchResultsRef.current &&
-        !searchResultsRef.current.contains(event.target)
+        !searchResultsRef.current.contains(event.target as Node)
       ) {
         setSearchResults([]);
       }

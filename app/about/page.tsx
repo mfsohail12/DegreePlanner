@@ -41,13 +41,13 @@ const About = () => {
             What is DegreePlanner?
           </h1>
           <p className="text-base/8">
-            DegreePlanner is a course planning tool designed to help McGill
+            {`DegreePlanner is a course planning tool designed to help McGill
             University students visualize and organize their academic journey.
             Whether you're just starting your degree or nearing graduation,
             DegreePlanner makes it easy to plan out future semesters, check off
             completed courses, and ensure you're on track with your program
             requirements. Built with students in mind, it simplifies academic
-            planning so you can focus on what matters most—your education.
+            planning so you can focus on what matters most—your education.`}
           </p>
         </motion.span>
         <motion.span
@@ -73,13 +73,13 @@ const About = () => {
             <Link href="/" className="underline">
               homepage
             </Link>
-            . Once you've chosen a program, you’ll see a breakdown of all
+            {`. Once you've chosen a program, you’ll see a breakdown of all
             required and complementary courses. From there, you can mark courses
             as complete, track your progress in your program, and see
             information for all courses including prerequisite requirements.
             DegreePlanner helps you visualize your progress, explore course
             options, and stay informed about how your choices align with your
-            degree requirements.
+            degree requirements.`}
           </p>
         </motion.span>
         <motion.span
@@ -103,17 +103,18 @@ const About = () => {
           <p className="text-base/8">
             DegreePlanner is a student-built tool created to assist with
             academic planning—
-            <strong>it is not an official McGill resource</strong>. While we
+            <strong>it is not an official McGill resource</strong>
+            {`. While we
             strive to keep program information up to date, there may be
             discrepancies or changes that aren't reflected in the application.
             Always verify your course selections and degree progress with an
-            academic advisor or{" "}
+            academic advisor or`}
             <a
               href="https://coursecatalogue.mcgill.ca/en/"
               className="underline font-bold"
               target="_blank"
             >
-              McGill's official course catalogue
+              {` McGill's official course catalogue`}
             </a>{" "}
             to ensure accuracy.
           </p>
@@ -135,9 +136,9 @@ const About = () => {
         >
           <h1 className="sm:text-3xl text-2xl font-bold">Contact Us</h1>
           <p className="text-base/8">
-            Have questions, suggestions, or feedback? We'd love to hear from
+            {`Have questions, suggestions, or feedback? We'd love to hear from
             you. Reach out to help improve DegreePlanner and make it even more
-            useful for students like you.
+            useful for students like you.`}
           </p>
         </motion.span>
         <motion.span

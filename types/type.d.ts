@@ -31,8 +31,15 @@ declare interface Course {
   faculty_name: string;
   credits: number;
   prerequisites?: string;
-  prerequisites_logical?: any;
+  prerequisites_logical?: PrerequisitesLogical;
   restrictions?: string;
 }
+
+declare interface Logical {
+  operator: string;
+  groups: Logical[] | string[];
+}
+
+type PrerequisitesLogical = Logical | string | null;
 
 type CourseCode = string;

@@ -9,7 +9,9 @@ import { motion } from "framer-motion";
 
 const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
-  const [prereqsLogical, setPrereqsLogical] = useState<any>(undefined);
+  const [prereqsLogical, setPrereqsLogical] = useState<
+    PrerequisitesLogical | undefined
+  >(undefined);
   const [isSuggested, setIsSuggested] = useState<boolean>(false);
   const [courseTitle, setCourseTitle] = useState<string>(courseCode);
   const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +63,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
   useEffect(() => {
     if (loading || prereqsLogical === undefined) return;
 
-    const prereqsMet = (logical: any) => {
+    const prereqsMet = (logical: PrerequisitesLogical) => {
       if (logical === null) return true;
       if (typeof logical === "string") {
         if (completedCourses.includes(logical)) return true;
@@ -69,14 +71,14 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
       }
 
       if (logical.operator === "AND") {
-        for (let item of logical.groups) {
+        for (const item of logical.groups) {
           if (!prereqsMet(item)) return false;
         }
 
         return true;
       }
       if (logical.operator === "OR") {
-        for (let item of logical.groups) {
+        for (const item of logical.groups) {
           if (prereqsMet(item)) return true;
         }
 
@@ -91,7 +93,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
 
   const isCompleted = completedCourses.includes(courseCode);
 
-  const handleCheckClick = (event: any) => {
+  const handleCheckClick = (event: React.MouseEvent<SVGElement>) => {
     event.stopPropagation();
 
     if (isCompleted) {

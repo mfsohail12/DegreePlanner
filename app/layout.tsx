@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Providers from "./ContextProvider";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,10 +26,12 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${inter.className} antialiased flex flex-col h-screen pt-14`}
       >
-        <Providers>
-          <Navbar />
-          {children}
-        </Providers>
+        <Suspense>
+          <Providers>
+            <Navbar />
+            {children}
+          </Providers>
+        </Suspense>
       </body>
     </html>
   );
