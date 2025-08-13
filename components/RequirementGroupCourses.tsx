@@ -6,7 +6,6 @@ import CourseNode from "./CourseNode";
 import SkeletonCourseNode from "./SkeletonCourseNode";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 import { useProgramProgress } from "@/context/ProgramProgressContext";
-import { filter } from "motion/react-client";
 
 const RequirementGroupCourses = ({
   requirementGroup,
@@ -20,13 +19,13 @@ const RequirementGroupCourses = ({
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [completedCredits, setCompletedCredits] = useState<number>(0);
-  const [courseLimit, setCourseLimit] = useState<number>(1);
+  const [showAll, setShowAll] = useState<boolean>(false);
   const { completedCourses } = useCompletedCourses();
   const { programProgress, setProgramProgress } = useProgramProgress();
 
   const fetchRequirementGroupCourses = async (
     requirementGroup: RequirementGroup,
-    limitIncrease: number
+    showAllCourses: boolean
   ) => {
     try {
       setLoading(true);
@@ -49,7 +48,7 @@ const RequirementGroupCourses = ({
             requirement_group_id: requirementGroup.id,
             department_filters: requirementGroup.department_filter,
           })
-          .limit(9 * limitIncrease);
+          .limit(showAllCourses ? 11000 : 9);
 
         if (error) throw error;
         if (!data) return setRequirementCourses([]);
@@ -68,13 +67,12 @@ const RequirementGroupCourses = ({
   };
 
   useEffect(() => {
-    fetchRequirementGroupCourses(requirementGroup, 1);
+    fetchRequirementGroupCourses(requirementGroup, showAll);
   }, []);
 
-  // probably a better way to do this
   useEffect(() => {
-    fetchRequirementGroupCourses(requirementGroup, courseLimit);
-  }, [courseLimit]);
+    fetchRequirementGroupCourses(requirementGroup, showAll);
+  }, [showAll]);
 
   useEffect(() => {
     if (requirementCourses.length == 0) return;
@@ -163,7 +161,7 @@ const RequirementGroupCourses = ({
         <p className="text-xs mt-1">Note: {requirementGroup.note}</p>
       )}
       <div className="flex flex-wrap gap-x-14 gap-y-10 justify-center items-center mt-6">
-        {Array.from({ length: courseLimit * 9 }).map((_, index) => (
+        {Array.from({ length: 9 }).map((_, index) => (
           <SkeletonCourseNode key={index} />
         ))}
       </div>
@@ -196,9 +194,9 @@ const RequirementGroupCourses = ({
         <div className="flex w-full justify-center items-center mt-8 absolute left-0 bottom-5">
           <button
             className="underline text-sm hover:text-slate-500"
-            onClick={() => setCourseLimit(courseLimit + 1)}
+            onClick={() => setShowAll((prev) => !prev)}
           >
-            Show more
+            {showAll ? "Show less" : "Show all"}
           </button>
         </div>
       )}

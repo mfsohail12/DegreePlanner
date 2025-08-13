@@ -1,5 +1,4 @@
 "use client";
-import { supabase } from "@/lib/supabase";
 import BscRequirements from "./BscRequirements";
 import ProgressBar from "./ProgressBar";
 import { useEffect, useState } from "react";
@@ -39,49 +38,6 @@ const ProgramInformation = ({
   useEffect(() => {
     if (completedCourses.length == 0) setProgramProgress([]);
   }, [completedCourses]);
-
-  // const fetchCompletedCredits = async (programId: string) => {
-  //   try {
-  //     const { data, error } = await supabase.rpc("get_all_program_courses", {
-  //       prog_id: programId,
-  //     });
-
-  //     if (error) throw error;
-
-  //     if (data.length == 0) {
-  //       setCompletedCredits(0);
-  //       return;
-  //     }
-
-  //     const completedProgramCourses = data.filter((course: Course) =>
-  //       completedCourses.includes(course.course_code)
-  //     );
-
-  //     setCompletedCredits(
-  //       completedProgramCourses.reduce(
-  //         (acc: number, curr: Course) => acc + curr.credits,
-  //         0
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.log("There was an error fetching completed credits: ", error);
-  //     throw error;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setProgram(programInfo);
-  //     if (completedCourses.length > 0) fetchCompletedCredits(programId);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (completedCourses.length == 0) {
-  //     setCompletedCredits(0);
-  //     return;
-  //   }
-
-  //   fetchCompletedCredits(programId);
-  // }, [completedCourses]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

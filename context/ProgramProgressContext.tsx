@@ -21,21 +21,6 @@ const ProgramProgressProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [programProgress, setProgramProgress] = useState<GroupProgress[]>([]);
 
-  useEffect(() => {
-    const storedProgramProgress = localStorage.getItem("storedProgramProgress");
-
-    if (storedProgramProgress) {
-      setProgramProgress(JSON.parse(storedProgramProgress));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(
-      "storedProgramProgress",
-      JSON.stringify(programProgress)
-    );
-  }, [programProgress]);
-
   return (
     <ProgramProgressContext.Provider
       value={{ programProgress, setProgramProgress }}
