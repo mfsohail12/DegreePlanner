@@ -13,11 +13,11 @@ const About = () => {
 
   useEffect(() => {
     if (showDisclaimer) {
-      disclaimerRef.current.scrollIntoView({
+      disclaimerRef.current?.scrollIntoView({
         behavior: "smooth",
       });
     }
-  });
+  }, []);
 
   return (
     <div className="w-screen flex justify-center">
