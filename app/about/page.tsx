@@ -156,7 +156,9 @@ const About = () => {
           }}
           className="flex gap-4 text-3xl items-center"
         >
-          <IoMdMail />
+          <a href="mailto:degreeplanner.contact@gmail.com?subject=DegreePlanner">
+            <IoMdMail />
+          </a>
           <a href="https://github.com/mfsohail12/DegreePlanner" target="_blank">
             <FaGithub />
           </a>
