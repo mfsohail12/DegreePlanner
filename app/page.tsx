@@ -65,7 +65,7 @@ export default function Home() {
         </motion.div>
       </div>
       <button
-        className="font-semibold underline fixed left-47/100 bottom-10 hover:opacity-90 hover:cursor-pointer"
+        className="font-semibold underline fixed sm:left-47/100 bottom-10 hover:opacity-90 hover:cursor-pointer"
         onClick={() => router.push("/about?show_disclaimer=true")}
       >
         Disclaimer

@@ -10,7 +10,7 @@ const BackToProgramButton = () => {
 
   return (
     <button
-      className="flex items-center gap-4 mb-5 hover:text-slate-500"
+      className="flex items-center gap-4 size-fit hover:text-slate-600"
       onClick={() =>
         program ? router.push(`/program/${program.id}`) : router.push("/")
       }
