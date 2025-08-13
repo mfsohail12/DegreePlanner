@@ -120,7 +120,7 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
         },
       }}
       title={courseTitle}
-      className={`sm:w-44 w-38 sm:text-base text-xs border-[0.5px] rounded-full hover:shadow-lg ${
+      className={`sm:w-44 w-40 sm:text-base text-sm border-[0.5px] rounded-full hover:shadow-lg ${
         isCompleted
           ? "bg-green border-green-600"
           : isSuggested
@@ -140,12 +140,12 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
       </p>
       {isCompleted ? (
         <FaCheckCircle
-          className="text-green-600 text-md hover:opacity-80"
+          className="text-green-600 text-base hover:opacity-80"
           onClick={handleCheckClick}
         />
       ) : (
         <FaRegCheckCircle
-          className={`text-md hover:opacity-80 ${
+          className={`text-base hover:opacity-80 ${
             isSuggested && "text-yellow-600"
           }`}
           onClick={handleCheckClick}
