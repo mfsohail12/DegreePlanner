@@ -16,6 +16,8 @@ const MarkCompleteButton = ({ courseCode }: { courseCode: CourseCode }) => {
   useEffect(() => {
     if (completedCourses.includes(courseCode)) {
       setCompleted(true);
+    } else {
+      setCompleted(false);
     }
   }, [completedCourses]);
 
