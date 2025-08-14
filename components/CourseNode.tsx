@@ -145,7 +145,8 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
         />
       ) : (
         <FaRegCheckCircle
-          className={`text-base hover:opacity-80 ${
+          title="Mark as Complete"
+          className={`text-base hover:text-green-600 ${
             isSuggested && "text-yellow-600"
           }`}
           onClick={handleCheckClick}
