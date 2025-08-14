@@ -1,34 +1,57 @@
 "use client";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
+import { useProgram } from "@/context/ProgramContext";
+import { getAllocationGroupId } from "@/lib/course";
 import { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegCheckCircle } from "react-icons/fa";
 
-const MarkCompleteButton = ({ courseCode }: { courseCode: CourseCode }) => {
+const MarkCompleteButton = ({ course }: { course: Course }) => {
   const [completed, setCompleted] = useState<boolean>(false);
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
+  const { program } = useProgram();
 
   useEffect(() => {
-    if (completedCourses.includes(courseCode)) {
+    if (
+      completedCourses
+        .map((completedCourse) => completedCourse.courseCode)
+        .includes(course.course_code)
+    ) {
       setCompleted(true);
     }
   }, []);
 
   useEffect(() => {
-    if (completedCourses.includes(courseCode)) {
+    if (
+      completedCourses
+        .map((completedCourse) => completedCourse.courseCode)
+        .includes(course.course_code)
+    ) {
       setCompleted(true);
     } else {
       setCompleted(false);
     }
   }, [completedCourses]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (completed) {
       setCompletedCourses([
-        ...completedCourses.filter((c) => c !== courseCode),
+        ...completedCourses.filter(
+          (completedCourse) => completedCourse.courseCode !== course.course_code
+        ),
       ]);
       setCompleted(false);
     } else {
-      setCompletedCourses([...completedCourses, courseCode]);
+      setCompletedCourses([
+        ...completedCourses,
+        {
+          courseCode: course.course_code,
+          allocatedGroupId: await getAllocationGroupId(
+            program?.id ?? null,
+            course.course_code
+          ),
+          credits: course.credits,
+        },
+      ]);
       setCompleted(true);
     }
   };

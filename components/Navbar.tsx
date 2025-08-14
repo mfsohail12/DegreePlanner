@@ -9,14 +9,21 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { RiResetLeftLine } from "react-icons/ri";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { useProgram } from "@/context/ProgramContext";
+import { getAllocationGroupId } from "@/lib/course";
 
 const Navbar = () => {
   const [search, setSearch] = useState<string>("");
   const [searchResults, setSearchResults] = useState<CourseCode[]>([]);
   const [showCompletedCoursesModal, setShowCompletedCoursesModal] =
     useState<boolean>(false);
+  const [resolvedSearchResults, setResolvedSearchResults] = useState<
+    { courseCode: CourseCode; allocatedGroupId: number | null }[]
+  >([]);
+
   const searchResultsRef = useRef<HTMLDivElement | null>(null);
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
+  const { program } = useProgram();
 
   const pathname = usePathname();
 
@@ -44,6 +51,36 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  useEffect(() => {
+    const fetchAllocationGroupIds = async () => {
+      try {
+        const resolvedData = await Promise.all(
+          searchResults.map(async (result) => {
+            const allocatedGroupId = await getAllocationGroupId(
+              program?.id ?? null,
+              result
+            );
+            return { courseCode: result, allocatedGroupId };
+          })
+        );
+        setResolvedSearchResults(resolvedData);
+      } catch (error) {
+        console.log(
+          "There was an error fetching allocationGroupIds for search results: ",
+          error
+        );
+      }
+    };
+
+    if (program && searchResults.length > 0) {
+      fetchAllocationGroupIds();
+    }
+  }, [searchResults, program]);
+
+  useEffect(() => {
+    if (searchResults.length == 0) setResolvedSearchResults([]);
+  }, [searchResults]);
 
   return (
     <>
@@ -81,13 +118,17 @@ const Navbar = () => {
           </span>
         )}
       </nav>
-      {searchResults.length > 0 && (
+      {resolvedSearchResults.length > 0 && (
         <div
           ref={searchResultsRef}
           className="w-screen max-h-1/4 overflow-y-scroll overscroll-contain z-100 py-7 px-4 bg-white border-b-[0.5px] shadow-lg flex gap-8 flex-wrap items-center justify-center fixed top-[60px] left-0"
         >
-          {searchResults.map((result) => (
-            <CourseNode key={result} courseCode={result} />
+          {resolvedSearchResults.map(({ courseCode, allocatedGroupId }) => (
+            <CourseNode
+              key={courseCode}
+              courseCode={courseCode}
+              allocatedGroupId={allocatedGroupId}
+            />
           ))}
         </div>
       )}
@@ -134,8 +175,12 @@ const Navbar = () => {
               </span>
               <div className="flex flex-wrap gap-7 justify-center items-center">
                 {completedCourses.length > 0 ? (
-                  completedCourses.map((course) => (
-                    <CourseNode key={course} courseCode={course} />
+                  completedCourses.map((completedCourse) => (
+                    <CourseNode
+                      key={completedCourse.courseCode}
+                      courseCode={completedCourse.courseCode}
+                      allocatedGroupId={completedCourse.allocatedGroupId}
+                    />
                   ))
                 ) : (
                   <p className="flex justify-center items-cente sm:text-base text-sm">

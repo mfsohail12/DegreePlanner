@@ -81,50 +81,18 @@ const RequirementGroupCourses = ({
       return;
     }
 
-    const fetchCompletedCredits = async () => {
-      try {
-        if (!requirementGroup.is_dynamic) {
-          const completedRequiredCourses = requirementCourses.filter((course) =>
-            completedCourses.includes(course)
-          );
-
-          const { data, error } = await supabase
-            .from("course")
-            .select("credits")
-            .in("course_code", completedRequiredCourses);
-
-          if (error) throw error;
-
-          const totalCredits = data.reduce(
-            (acc: number, item: { credits: number }) => acc + item.credits,
-            0
-          );
-
-          setCompletedCredits(totalCredits);
-        } else {
-          const { data, error } = await supabase
-            .rpc("get_dynamic_group_courses", {
-              min_course_level: requirementGroup.min_course_level,
-              max_course_level: requirementGroup.max_course_level,
-              requirement_group_id: requirementGroup.id,
-              department_filters: requirementGroup.department_filter,
-            })
-            .filter("course_code", "in", `(${completedCourses.toString()})`);
-
-          if (error) throw error;
-
-          const totalCredits = data
-            .map((course: Course) => course.credits)
-            .reduce((acc: number, item: number) => acc + item, 0);
-          setCompletedCredits(totalCredits);
-        }
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
+    const fetchCompletedCredits = async (groupId: number) => {
+      setCompletedCredits(
+        completedCourses
+          .filter(
+            (completedCourse) => completedCourse.allocatedGroupId === groupId
+          )
+          .map((completedCourse) => completedCourse.credits)
+          .reduce((acc, item) => acc + item, 0)
+      );
     };
 
-    fetchCompletedCredits();
+    fetchCompletedCredits(requirementGroup.id);
   }, [requirementCourses, completedCourses]);
 
   useEffect(() => {
@@ -186,8 +154,12 @@ const RequirementGroupCourses = ({
         <p className="text-xs mt-1">Note: {requirementGroup.note}</p>
       )}
       <div className="flex flex-wrap gap-x-14 gap-y-10 justify-center items-center mt-6">
-        {requirementCourses?.map((requirementCourse: string) => (
-          <CourseNode key={requirementCourse} courseCode={requirementCourse} />
+        {requirementCourses?.map((requirementCourse: CourseCode) => (
+          <CourseNode
+            key={requirementCourse}
+            courseCode={requirementCourse}
+            allocatedGroupId={requirementGroup.id}
+          />
         ))}
       </div>
       {requirementGroup.is_dynamic && (

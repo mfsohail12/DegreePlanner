@@ -7,13 +7,20 @@ import { useEffect, useState } from "react";
 import { FaRegCheckCircle, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
+const CourseNode = ({
+  courseCode,
+  allocatedGroupId,
+}: {
+  courseCode: CourseCode;
+  allocatedGroupId: number | null;
+}) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
   const [prereqsLogical, setPrereqsLogical] = useState<
     PrerequisitesLogical | undefined
   >(undefined);
   const [isSuggested, setIsSuggested] = useState<boolean>(false);
   const [courseTitle, setCourseTitle] = useState<string>(courseCode);
+  const [credits, setCredits] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -44,12 +51,15 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
       try {
         const { data, error } = await supabase
           .from("course")
-          .select("course_name")
+          .select("course_name, credits")
           .eq("course_code", courseCode);
 
         if (error) throw error;
 
-        if (data) setCourseTitle(data[0].course_name);
+        if (data.length > 0) {
+          setCourseTitle(data[0].course_name);
+          setCredits(data[0].credits);
+        }
       } catch (error) {
         console.log(error);
         throw error;
@@ -66,7 +76,12 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
     const prereqsMet = (logical: PrerequisitesLogical) => {
       if (logical === null) return true;
       if (typeof logical === "string") {
-        if (completedCourses.includes(logical)) return true;
+        if (
+          completedCourses
+            .map((completedCourse) => completedCourse.courseCode)
+            .includes(logical)
+        )
+          return true;
         return false;
       }
 
@@ -91,17 +106,29 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
     setIsSuggested(prereqsMet(prereqsLogical));
   }, [prereqsLogical, completedCourses]);
 
-  const isCompleted = completedCourses.includes(courseCode);
+  const isCompleted = completedCourses
+    .map((completedCourse) => completedCourse.courseCode)
+    .includes(courseCode);
 
-  const handleCheckClick = (event: React.MouseEvent<SVGElement>) => {
+  const handleCheckClick = (
+    event: React.MouseEvent<SVGElement>,
+    courseCode: CourseCode,
+    allocatedGroupId: number | null,
+    credits: number
+  ) => {
     event.stopPropagation();
 
     if (isCompleted) {
       setCompletedCourses([
-        ...completedCourses.filter((code) => code !== courseCode),
+        ...completedCourses.filter(
+          (completedCourse) => completedCourse.courseCode !== courseCode
+        ),
       ]);
     } else {
-      setCompletedCourses([...completedCourses, courseCode]);
+      setCompletedCourses([
+        ...completedCourses,
+        { courseCode, allocatedGroupId, credits },
+      ]);
     }
   };
 
@@ -141,7 +168,9 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
       {isCompleted ? (
         <FaCheckCircle
           className="text-green-600 text-base hover:opacity-80"
-          onClick={handleCheckClick}
+          onClick={(e) =>
+            handleCheckClick(e, courseCode, allocatedGroupId, credits)
+          }
         />
       ) : (
         <FaRegCheckCircle
@@ -149,7 +178,9 @@ const CourseNode = ({ courseCode }: { courseCode: CourseCode }) => {
           className={`text-base hover:text-green-600 ${
             isSuggested && "text-yellow-600"
           }`}
-          onClick={handleCheckClick}
+          onClick={(e) =>
+            handleCheckClick(e, courseCode, allocatedGroupId, credits)
+          }
         />
       )}
     </motion.button>

@@ -33,7 +33,9 @@ const RequiredGroups = ({
       if (error) throw error;
 
       const completedRequiredCourses = data.filter((course: Course) =>
-        completedCourses.includes(course.course_code)
+        completedCourses
+          .map((completedCourse) => completedCourse.courseCode)
+          .includes(course.course_code)
       );
 
       setCompletedCredits(

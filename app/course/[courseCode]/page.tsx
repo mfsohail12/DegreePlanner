@@ -1,4 +1,3 @@
-import CourseNode from "@/components/CourseNode";
 import {
   convertCourseCode,
   getCoursesFromLogicalPrerequisites,
@@ -6,9 +5,10 @@ import {
 import { LuExternalLink } from "react-icons/lu";
 import { supabase } from "@/lib/supabase";
 import BackToProgramButton from "@/components/BackToProgramButton";
-import CourseDescription from "@/components/CourseDescription";
 import { notFound } from "next/navigation";
 import MarkCompleteButton from "@/components/MarkCompleteButton";
+import Prerequisites from "@/components/Prerequisites";
+import DOMPurify from "isomorphic-dompurify";
 
 const page = async ({
   params,
@@ -42,14 +42,14 @@ const page = async ({
     ? getCoursesFromLogicalPrerequisites(course.prerequisites_logical)
     : [];
 
+  const clean = DOMPurify.sanitize(course.course_description);
+
   return (
     <div className="sm:w-4/5 w-full pt-10 pb-20 sm:px-10 px-5">
       <span className="flex flex-col mb-3 gap-2">
         <BackToProgramButton />
         <div className="sm:absolute sm:right-10 sm:top-25">
-          <MarkCompleteButton
-            courseCode={convertCourseCode(courseCode, false)}
-          />
+          <MarkCompleteButton course={course} />
         </div>
       </span>
 
@@ -73,7 +73,19 @@ const page = async ({
           {course.faculty_name}
         </div>
       </span>
-      <CourseDescription course={course} />
+
+      {course.course_description && (
+        <>
+          <h2 className="mt-8 mb-4 sm:text-2xl text-xl font-semibold">
+            Course Description
+          </h2>
+          <p
+            dangerouslySetInnerHTML={{ __html: clean }}
+            className="sm:text-base text-sm"
+          ></p>
+        </>
+      )}
+
       {course.restrictions && (
         <p className="mt-5 text-red-700 sm:text-base text-sm">
           Restrictions: {course.restrictions}
@@ -85,11 +97,7 @@ const page = async ({
             Prerequisites:
           </h2>
           <p className="mb-5 sm:text-base text-sm">{course.prerequisites}</p>
-          <div className="flex gap-6 flex-wrap">
-            {prerequisites.map((prereq) => (
-              <CourseNode key={prereq} courseCode={prereq} />
-            ))}
-          </div>
+          <Prerequisites prerequisites={prerequisites} />
         </>
       )}
     </div>

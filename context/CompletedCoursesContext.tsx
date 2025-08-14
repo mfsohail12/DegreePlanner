@@ -1,9 +1,15 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 
+type CompletedCourse = {
+  courseCode: CourseCode;
+  allocatedGroupId: number | null;
+  credits: number;
+};
+
 type CompletedCoursesContextType = {
-  completedCourses: CourseCode[];
-  setCompletedCourses: React.Dispatch<React.SetStateAction<CourseCode[]>>;
+  completedCourses: CompletedCourse[];
+  setCompletedCourses: React.Dispatch<React.SetStateAction<CompletedCourse[]>>;
 };
 
 const CompletedCoursesContext = createContext<
@@ -13,7 +19,9 @@ const CompletedCoursesContext = createContext<
 const CompletedCoursesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [completedCourses, setCompletedCourses] = useState<CourseCode[]>([]);
+  const [completedCourses, setCompletedCourses] = useState<CompletedCourse[]>(
+    []
+  );
 
   useEffect(() => {
     const storedCompletedCourses = localStorage.getItem(
