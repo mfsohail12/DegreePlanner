@@ -2,7 +2,6 @@
 import RequirementGroupCourses from "./RequirementGroupCourses";
 import ProgressBar from "./ProgressBar";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 
 const getTotalCredits = (requiredGroups: RequirementGroup[]) => {
@@ -23,38 +22,23 @@ const RequiredGroups = ({
   const [completedCredits, setCompletedCredits] = useState<number>(0);
   const { completedCourses } = useCompletedCourses();
 
-  const fetchCompletedCredits = async (programId: string) => {
-    try {
-      const { data, error } = await supabase.rpc(
-        "get_all_required_program_courses",
-        { prog_id: parseInt(programId) }
-      );
+  const fetchCompletedCredits = () => {
+    const requirementGroupIds = requiredGroups.map((rg) => rg.id);
+    let totalCredits = 0;
 
-      if (error) throw error;
-
-      const completedRequiredCourses = data.filter((course: Course) =>
-        completedCourses
-          .map((completedCourse) => completedCourse.courseCode)
-          .includes(course.course_code)
-      );
-
-      setCompletedCredits(
-        completedRequiredCourses.reduce(
-          (acc: number, curr: Course) => acc + curr.credits,
-          0
-        )
-      );
-    } catch (error) {
-      console.log(
-        "There was an error fetching completed credits for required groups: ",
-        error
-      );
-      throw error;
+    for (const course of completedCourses) {
+      if (
+        course.allocatedGroupId &&
+        requirementGroupIds.includes(course.allocatedGroupId)
+      )
+        totalCredits += course.credits;
     }
+
+    setCompletedCredits(totalCredits);
   };
 
   useEffect(() => {
-    if (completedCourses.length > 0) fetchCompletedCredits(programId);
+    if (completedCourses.length > 0) fetchCompletedCredits();
   }, []);
 
   useEffect(() => {
@@ -63,7 +47,7 @@ const RequiredGroups = ({
       return;
     }
 
-    fetchCompletedCredits(programId);
+    fetchCompletedCredits();
   }, [completedCourses]);
 
   return (
