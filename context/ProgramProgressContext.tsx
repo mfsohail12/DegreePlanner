@@ -12,6 +12,7 @@ type GroupProgress = {
 type ProgramProgressContextType = {
   programProgress: GroupProgress[];
   setProgramProgress: React.Dispatch<React.SetStateAction<GroupProgress[]>>;
+  isAllocatingGroups: boolean;
 };
 
 const ProgramProgressContext = createContext<
@@ -22,6 +23,7 @@ const ProgramProgressProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [programProgress, setProgramProgress] = useState<GroupProgress[]>([]);
+  const [isAllocatingGroups, setIsAllocatingGroups] = useState<boolean>(false);
   const { program } = useProgram();
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
 
@@ -43,7 +45,8 @@ const ProgramProgressProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!program || completedCourses.length == 0) return;
 
-    const allocateGroups = async () => {
+    const allocateCompletedCoursesToGroups = async () => {
+      setIsAllocatingGroups(true);
       const updatedCourses = await Promise.all(
         completedCourses.map(async (completedCourse) => ({
           ...completedCourse,
@@ -54,15 +57,16 @@ const ProgramProgressProvider: React.FC<{ children: React.ReactNode }> = ({
         }))
       );
 
-      setCompletedCourses(updatedCourses);
+      setCompletedCourses([...updatedCourses]);
+      setIsAllocatingGroups(false);
     };
 
-    allocateGroups();
+    allocateCompletedCoursesToGroups();
   }, [program]);
 
   return (
     <ProgramProgressContext.Provider
-      value={{ programProgress, setProgramProgress }}
+      value={{ programProgress, setProgramProgress, isAllocatingGroups }}
     >
       {children}
     </ProgramProgressContext.Provider>

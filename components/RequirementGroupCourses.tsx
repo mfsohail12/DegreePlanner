@@ -21,7 +21,8 @@ const RequirementGroupCourses = ({
   const [completedCredits, setCompletedCredits] = useState<number>(0);
   const [showAll, setShowAll] = useState<boolean>(false);
   const { completedCourses } = useCompletedCourses();
-  const { programProgress, setProgramProgress } = useProgramProgress();
+  const { programProgress, setProgramProgress, isAllocatingGroups } =
+    useProgramProgress();
 
   const fetchRequirementGroupCourses = async (
     requirementGroup: RequirementGroup,
@@ -66,6 +67,23 @@ const RequirementGroupCourses = ({
     }
   };
 
+  const updateProgramProgress = () => {
+    setProgramProgress((prev) => {
+      const filtered = prev.filter((gp) => gp.id !== requirementGroup.id);
+
+      const groupProgress = {
+        id: requirementGroup.id,
+        progress:
+          completedCredits >
+          requirementGroup.min_credits + requirementGroup.overlap_credits
+            ? requirementGroup.min_credits + requirementGroup.overlap_credits
+            : completedCredits,
+      };
+
+      return [...filtered, groupProgress];
+    });
+  };
+
   useEffect(() => {
     fetchRequirementGroupCourses(requirementGroup, showAll);
   }, []);
@@ -96,19 +114,8 @@ const RequirementGroupCourses = ({
   }, [requirementCourses, completedCourses]);
 
   useEffect(() => {
-    const filtered = programProgress.filter(
-      (gp) => gp.id != requirementGroup.id
-    ); // filter out progress if already exists
-    const groupProgress = {
-      id: requirementGroup.id,
-      progress:
-        completedCredits >
-        requirementGroup.min_credits + requirementGroup.overlap_credits
-          ? requirementGroup.min_credits + requirementGroup.overlap_credits
-          : completedCredits,
-    };
-    setProgramProgress([...filtered, groupProgress]);
-  }, [completedCredits]);
+    if (!isAllocatingGroups) updateProgramProgress();
+  }, [completedCredits, isAllocatingGroups]);
 
   return loading ? (
     <div className={`w-full pt-5 pb-10 px-7 border-[0.5px] rounded-xl`}>
