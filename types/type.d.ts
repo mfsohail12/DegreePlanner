@@ -15,6 +15,7 @@ declare interface RequirementGroup {
   category_type: string;
   group_name: string;
   min_credits: number;
+  overlap_credits: number;
   min_course_level?: number;
   max_course_level?: number;
   is_dynamic: boolean;

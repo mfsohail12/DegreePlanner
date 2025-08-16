@@ -102,8 +102,9 @@ const RequirementGroupCourses = ({
     const groupProgress = {
       id: requirementGroup.id,
       progress:
-        completedCredits > requirementGroup.min_credits
-          ? requirementGroup.min_credits
+        completedCredits >
+        requirementGroup.min_credits + requirementGroup.overlap_credits
+          ? requirementGroup.min_credits + requirementGroup.overlap_credits
           : completedCredits,
     };
     setProgramProgress([...filtered, groupProgress]);
