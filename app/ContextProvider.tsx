@@ -6,9 +6,9 @@ import ProgramProgressProvider from "@/context/ProgramProgressContext";
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ProgramProvider>
-      <ProgramProgressProvider>
-        <CompletedCoursesProvider>{children}</CompletedCoursesProvider>
-      </ProgramProgressProvider>
+      <CompletedCoursesProvider>
+        <ProgramProgressProvider>{children}</ProgramProgressProvider>
+      </CompletedCoursesProvider>
     </ProgramProvider>
   );
 };
