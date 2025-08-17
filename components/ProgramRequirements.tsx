@@ -55,10 +55,14 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
       </div>
 
       {/* Required courses */}
-      <RequiredGroups requiredGroups={requiredGroups} programId={programId} />
+      {requiredGroups.length > 0 && (
+        <RequiredGroups requiredGroups={requiredGroups} programId={programId} />
+      )}
 
       {/* Complementary courses */}
-      <ComplementaryGroups complementaryGroups={complementaryGroups} />
+      {complementaryGroups.length > 0 && (
+        <ComplementaryGroups complementaryGroups={complementaryGroups} />
+      )}
     </div>
   );
 };
