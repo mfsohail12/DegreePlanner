@@ -39,13 +39,13 @@ const ProgramRequirements = async ({ programId }: { programId: string }) => {
     <div className="flex flex-col gap-10">
       {/* legend */}
       <div className="font-semibold text-sm flex flex-wrap gap-5 items-center">
-        <div className="rounded-full bg-green text-green-600 border-green-600 py-1 px-2 border-[0.5px]">
+        <div className="rounded-full bg-green text-green-600 border-green-600 py-1 px-2 border-1">
           Completed
         </div>
-        <div className="rounded-full bg-yellow text-yellow-600 border-yellow-600 py-1 px-2 border-[0.5px]">
+        <div className="rounded-full bg-yellow text-yellow-600 border-yellow-600 py-1 px-2 border-1">
           Suggested
         </div>
-        <div className="rounded-full bg-light-grey py-1 px-2 border-[0.5px]">
+        <div className="rounded-full bg-light-grey py-1 px-2 border-1">
           Prerequisites Not Met
         </div>
         <div className="flex items-center gap-2">

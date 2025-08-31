@@ -10,9 +10,11 @@ import { motion } from "framer-motion";
 const CourseNode = ({
   courseCode,
   allocatedGroupId,
+  showCourseAsList,
 }: {
   courseCode: CourseCode;
   allocatedGroupId: number | null;
+  showCourseAsList: boolean;
 }) => {
   const { completedCourses, setCompletedCourses } = useCompletedCourses();
   const [prereqsLogical, setPrereqsLogical] = useState<
@@ -147,40 +149,52 @@ const CourseNode = ({
         },
       }}
       title={courseTitle}
-      className={`sm:w-44 w-40 sm:text-base text-sm border-[0.5px] rounded-full hover:shadow-lg ${
+      className={`sm:text-base text-sm font-semibold border-1 rounded-full hover:shadow-lg py-2 sm:px-5 px-4 flex gap-2 justify-between items-center ${
+        showCourseAsList ? "sm:w-auto w-full" : "sm:w-52 w-48"
+      } ${
         isCompleted
-          ? "bg-green border-green-600"
+          ? "bg-green border-green-600 text-green-600"
           : isSuggested
-          ? "bg-yellow border-yellow-600"
+          ? "bg-yellow border-yellow-600 text-yellow-600"
           : "bg-light-grey"
-      } py-2 flex items-center px-5 gap-2 justify-center`}
+      }`}
       onClick={() =>
         router.push(`/course/${convertCourseCode(courseCode, true)}`)
       }
     >
-      <p
-        className={`font-semibold ${
-          isCompleted ? "text-green-600" : isSuggested ? "text-yellow-600" : ""
-        }`}
-      >
-        {courseCode}
-      </p>
+      {showCourseAsList ? (
+        <>
+          <div className="w-5 h-5 p-1 rounded-full border-[1.5px] flex items-center justify-center text-xs">
+            {credits}
+          </div>
+          <p>{`${courseCode}: ${courseTitle}`}</p>
+        </>
+      ) : (
+        <>
+          <div className="w-5 h-5 p-1 rounded-full border-[1.5px] flex items-center justify-center text-xs">
+            {credits}
+          </div>
+          <p>{courseCode}</p>
+        </>
+      )}
       {isCompleted ? (
         <FaCheckCircle
-          className="text-green-600 text-base hover:opacity-80"
+          className="text-green-600 hover:opacity-80 flex-shrink-0"
           onClick={(e) =>
             handleCheckClick(e, courseCode, allocatedGroupId, credits)
           }
+          size={18}
         />
       ) : (
         <FaRegCheckCircle
           title="Mark as Complete"
-          className={`text-base hover:text-green-600 ${
+          className={`hover:text-green-600 ${
             isSuggested && "text-yellow-600"
-          }`}
+          } flex-shrink-0`}
           onClick={(e) =>
             handleCheckClick(e, courseCode, allocatedGroupId, credits)
           }
+          size={18}
         />
       )}
     </motion.button>

@@ -79,10 +79,10 @@ const ProgramInformation = ({
         variants={itemVariants}
         className="flex sm:flex-row flex-col gap-2 mb-5"
       >
-        <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs size-fit">
+        <div className="rounded-full px-2 py-1 bg-light-grey border-1 text-xs size-fit">
           <span className="font-semibold">Degree:</span> {programInfo.degree}
         </div>
-        <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs size-fit">
+        <div className="rounded-full px-2 py-1 bg-light-grey border-1 text-xs size-fit">
           <span className="font-semibold">Offered By:</span>{" "}
           {programInfo.faculty}
         </div>
@@ -93,15 +93,19 @@ const ProgramInformation = ({
           totalCredits={programInfo.total_credits}
         />
       </motion.div>
-      <motion.h2
-        variants={itemVariants}
-        className="mt-8 mb-4 sm:text-2xl text-lg font-semibold"
-      >
-        Program Description
-      </motion.h2>
-      <motion.p variants={itemVariants} className="sm:text-base text-sm">
-        {programInfo.program_description}
-      </motion.p>
+      {programInfo.program_description && (
+        <>
+          <motion.h2
+            variants={itemVariants}
+            className="mt-8 mb-4 sm:text-2xl text-lg font-semibold"
+          >
+            Program Description
+          </motion.h2>
+          <motion.p variants={itemVariants} className="sm:text-base text-sm">
+            {programInfo.program_description}
+          </motion.p>
+        </>
+      )}
       <motion.div variants={itemVariants}>
         {/Bachelor of Science/.test(programInfo.degree) && <BscRequirements />}
       </motion.div>

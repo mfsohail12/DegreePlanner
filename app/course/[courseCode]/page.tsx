@@ -65,10 +65,10 @@ const page = async ({
         </a>
       </span>
       <span className="flex sm:flex-row flex-col gap-2 mb-5">
-        <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs size-fit">
+        <div className="rounded-full px-2 py-1 bg-light-grey border-1 text-xs size-fit">
           <span className="font-semibold">Credits:</span> {course.credits}
         </div>
-        <div className="rounded-full px-2 py-1 bg-light-grey border-[0.5px] text-xs size-fit">
+        <div className="rounded-full px-2 py-1 bg-light-grey border-1 text-xs size-fit">
           <span className="font-semibold">Offered By:</span>{" "}
           {course.faculty_name}
         </div>

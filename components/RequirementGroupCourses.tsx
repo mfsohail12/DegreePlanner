@@ -6,6 +6,8 @@ import CourseNode from "./CourseNode";
 import SkeletonCourseNode from "./SkeletonCourseNode";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
 import { useProgramProgress } from "@/context/ProgramProgressContext";
+import { IoGrid } from "react-icons/io5";
+import { FaThList } from "react-icons/fa";
 
 const RequirementGroupCourses = ({
   requirementGroup,
@@ -20,6 +22,7 @@ const RequirementGroupCourses = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [completedCredits, setCompletedCredits] = useState<number>(0);
   const [showAll, setShowAll] = useState<boolean>(false);
+  const [showCoursesAsList, setShowCoursesAsList] = useState<boolean>(false);
   const { completedCourses } = useCompletedCourses();
   const { programProgress, setProgramProgress, isAllocatingGroups } =
     useProgramProgress();
@@ -118,7 +121,7 @@ const RequirementGroupCourses = ({
   }, [completedCredits, isAllocatingGroups]);
 
   return loading ? (
-    <div className={`w-full pt-5 pb-10 px-7 border-[0.5px] rounded-xl`}>
+    <div className={`w-full pt-5 pb-10 px-7 border-1 rounded-xl`}>
       {requirementGroup.group_name && (
         <h2 className="text-xl font-semibold">{requirementGroup.group_name}</h2>
       )}
@@ -143,7 +146,24 @@ const RequirementGroupCourses = ({
       </div>
     </div>
   ) : (
-    <div className="w-full pt-5 pb-15 sm:px-7 px-5 border-[0.5px] rounded-xl relative">
+    <div className="w-full pt-5 pb-15 sm:px-7 px-5 border-1 rounded-xl relative">
+      <div className="flex gap-1 absolute top-5 right-5">
+        <FaThList
+          title="Expand courses"
+          className={`text-lg hover:opacity-80 ${
+            !showCoursesAsList && "opacity-60"
+          }`}
+          onClick={() => setShowCoursesAsList(true)}
+        />
+
+        <IoGrid
+          title="Collapse courses"
+          className={`text-lg hover:opacity-80 ${
+            showCoursesAsList && "opacity-60"
+          }`}
+          onClick={() => setShowCoursesAsList(false)}
+        />
+      </div>
       {requirementGroup.group_name && (
         <h2 className="text-xl font-semibold">{requirementGroup.group_name}</h2>
       )}
@@ -167,6 +187,7 @@ const RequirementGroupCourses = ({
             key={requirementCourse}
             courseCode={requirementCourse}
             allocatedGroupId={requirementGroup.id}
+            showCourseAsList={showCoursesAsList}
           />
         ))}
       </div>

@@ -70,7 +70,7 @@ const ProgramSearchBar = () => {
         <IoIosSearch className="sm:text-2xl text-xl absolute left-3" />
         <input
           type="text"
-          className="w-102 indent-7 border-[0.5px] rounded-full py-2 px-3 shadow-lg bg-white focus:outline-none focus:ring-0"
+          className="w-102 indent-7 border-1 rounded-full py-2 px-3 shadow-lg bg-white focus:outline-none focus:ring-0"
           placeholder="Find Your Program"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
@@ -82,7 +82,7 @@ const ProgramSearchBar = () => {
         </div>
       )}
       {searchResults.length > 0 && (
-        <div className="flex flex-col gap-1 p-2 z-10 bg-white shadow-lg border-[0.5px] rounded-xl absolute top-full mt-3 sm:w-102 w-80">
+        <div className="flex flex-col gap-1 p-2 z-10 bg-white shadow-lg border-1 rounded-xl absolute top-full mt-3 sm:w-102 w-80">
           {searchResults.map((result) => (
             <button
               key={result.id}

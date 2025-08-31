@@ -12,8 +12,6 @@ const Prerequisites = ({ prerequisites }: { prerequisites: CourseCode[] }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { program } = useProgram();
 
-  console.log(resolvedPrerequisites);
-
   useEffect(() => {
     const fetchAllocationGroupIds = async () => {
       try {
@@ -56,6 +54,7 @@ const Prerequisites = ({ prerequisites }: { prerequisites: CourseCode[] }) => {
           key={courseCode}
           courseCode={courseCode}
           allocatedGroupId={allocatedGroupId}
+          showCourseAsList={false}
         />
       ))}
     </div>

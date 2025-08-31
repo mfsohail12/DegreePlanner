@@ -84,7 +84,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="w-screen flex items-center justify-between h-[60px] bg-light-grey border-b-[0.5px] lg:px-10 px-3 sm:py-3 py-2 fixed top-0 z-100">
+      <nav className="w-screen flex items-center justify-between h-[60px] bg-light-grey border-b-1 lg:px-10 px-3 sm:py-3 py-2 fixed top-0 z-100">
         <Link href="/" className="flex items-center gap-1">
           <h1 className="font-bold sm:text-xl text-sm">DegreePlanner</h1>
         </Link>
@@ -121,13 +121,14 @@ const Navbar = () => {
       {resolvedSearchResults.length > 0 && (
         <div
           ref={searchResultsRef}
-          className="w-screen max-h-1/4 overflow-y-scroll overscroll-contain z-100 py-7 px-4 bg-white border-b-[0.5px] shadow-lg flex gap-8 flex-wrap items-center justify-center fixed top-[60px] left-0"
+          className="w-screen max-h-1/4 overflow-y-scroll overscroll-contain z-100 py-7 px-4 bg-white border-b-1 shadow-lg flex gap-8 flex-wrap items-center justify-center fixed top-[60px] left-0"
         >
           {resolvedSearchResults.map(({ courseCode, allocatedGroupId }) => (
             <CourseNode
               key={courseCode}
               courseCode={courseCode}
               allocatedGroupId={allocatedGroupId}
+              showCourseAsList={false}
             />
           ))}
         </div>
@@ -146,10 +147,10 @@ const Navbar = () => {
               y: "100%",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="max-h-2/5 h-60 fixed bottom-0 z-100 bg-white border-t-[0.5px] w-screen overflow-y-scroll shadow-[0px_-4px_4px_rgba(0,0,0,0.25)]"
+            className="h-2/5 fixed bottom-0 z-100 bg-white border-t-1 w-screen overflow-y-scroll shadow-[0px_-4px_4px_rgba(0,0,0,0.25)]"
           >
             <button
-              className="w-screen bg-slate-200 hover:bg-light-grey border-b-[0.5px] h-8 sticky top-0 left-0 flex justify-center items-center"
+              className="w-screen bg-slate-200 hover:bg-light-grey border-b-1 h-8 sticky top-0 left-0 flex justify-center items-center"
               onClick={() => setShowCompletedCoursesModal(false)}
             >
               <IoMdArrowDropdown className="text-3xl" />
@@ -180,6 +181,7 @@ const Navbar = () => {
                       key={completedCourse.courseCode}
                       courseCode={completedCourse.courseCode}
                       allocatedGroupId={completedCourse.allocatedGroupId}
+                      showCourseAsList={false}
                     />
                   ))
                 ) : (
