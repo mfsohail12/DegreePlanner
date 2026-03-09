@@ -40,12 +40,12 @@ export default function Home() {
           initial={{
             x: 0,
             y: 40,
-            rotate: "-15deg",
+            rotate: "-4deg",
           }}
           animate={{
             x: 0,
             y: 0,
-            rotate: ["-15deg", "5deg", "0deg"],
+            rotate: ["-4deg", "2deg", "0deg"],
           }}
           transition={{
             type: "keyframes",
@@ -65,7 +65,7 @@ export default function Home() {
         </motion.div>
       </div>
       <button
-        className="font-semibold underline fixed sm:left-47/100 bottom-10 hover:opacity-90 hover:cursor-pointer"
+        className="font-semibold fixed sm:left-47/100 bottom-10 hover:opacity-90 hover:cursor-pointer bg-foreground text-white px-4 py-2 rounded-full"
         onClick={() => router.push("/about?show_disclaimer=true")}
       >
         Disclaimer

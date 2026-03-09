@@ -5,8 +5,6 @@ import CourseSearchBar from "./CourseSearchBar";
 import { useEffect, useRef, useState } from "react";
 import CourseNode from "./CourseNode";
 import { useCompletedCourses } from "@/context/CompletedCoursesContext";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { RiResetLeftLine } from "react-icons/ri";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { useProgram } from "@/context/ProgramContext";
@@ -85,9 +83,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="w-screen flex items-center justify-between h-[60px] bg-light-grey border-b-1 lg:px-10 px-3 sm:py-3 py-2 fixed top-0 z-100">
+      <nav className="w-screen flex items-center justify-between h-[60px] bg-light-grey border-b-1 lg:px-10 px-5 sm:py-3 py-2 fixed top-0 z-100">
         <Link href="/" className="flex items-center gap-1">
-          <h1 className="font-bold sm:text-xl text-sm">DegreePlanner</h1>
+          <h1 className="font-bold sm:text-xl text-sm">
+            <span className="text-mcgill-red">Degree</span>Planner
+          </h1>
         </Link>
         {pathname.startsWith("/program") ||
         pathname.startsWith("/course") ||
