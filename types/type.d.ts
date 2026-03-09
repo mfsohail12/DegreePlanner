@@ -44,3 +44,9 @@ declare interface Logical {
 type PrerequisitesLogical = Logical | string | null;
 
 type CourseCode = string;
+
+declare interface CompletedCourse {
+  courseCode: CourseCode;
+  allocatedGroupId: number | null;
+  credits: number;
+}

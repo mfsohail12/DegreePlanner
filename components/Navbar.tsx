@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { useProgram } from "@/context/ProgramContext";
 import { getAllocationGroupId } from "@/lib/course";
+import CompletedCoursesDrawer from "./CompletedCoursesDrawer";
 
 const Navbar = () => {
   const [search, setSearch] = useState<string>("");
@@ -59,16 +60,16 @@ const Navbar = () => {
           searchResults.map(async (result) => {
             const allocatedGroupId = await getAllocationGroupId(
               program?.id ?? null,
-              result
+              result,
             );
             return { courseCode: result, allocatedGroupId };
-          })
+          }),
         );
         setResolvedSearchResults(resolvedData);
       } catch (error) {
         console.log(
           "There was an error fetching allocationGroupIds for search results: ",
-          error
+          error,
         );
       }
     };
@@ -94,10 +95,12 @@ const Navbar = () => {
           <span className="flex items-center sm:gap-3 gap-2">
             <button
               className="rounded-full h-7 sm:h-auto sm:px-4 sm:py-2 px-5 sm:text-sm bg-foreground hover:opacity-90 text-light-grey font-semibold"
-              onClick={() => setShowCompletedCoursesModal(true)}
+              onClick={() => setShowCompletedCoursesModal((prev) => !prev)}
             >
               <FaRegCheckCircle className="sm:hidden visible text-base" />
-              <p className="sm:inline hidden">View Completed Courses</p>
+              <p className="sm:inline hidden">
+                {showCompletedCoursesModal ? "Hide" : "View"} Completed Courses
+              </p>
             </button>
 
             <CourseSearchBar
@@ -147,50 +150,13 @@ const Navbar = () => {
               y: "100%",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="h-2/5 fixed bottom-0 z-100 bg-white border-t-1 w-screen overflow-y-scroll shadow-[0px_-4px_4px_rgba(0,0,0,0.25)]"
+            className="h-1/2 fixed bottom-0 z-100 bg-white border-t-1 w-screen overflow-y-scroll shadow-[0px_-4px_4px_rgba(0,0,0,0.25)]"
           >
-            <button
-              className="w-screen bg-slate-200 hover:bg-light-grey border-b-1 h-8 sticky top-0 left-0 flex justify-center items-center"
-              onClick={() => setShowCompletedCoursesModal(false)}
-            >
-              <IoMdArrowDropdown className="text-3xl" />
-            </button>
-            <div className="pb-8 px-8">
-              <span className="flex justify-between items-center mt-6 mb-8">
-                <h1 className="sm:text-3xl text-2xl font-semibold">
-                  Completed Courses
-                </h1>
-                {completedCourses.length > 0 && (
-                  <button
-                    className="flex gap-2 items-center font-semibold rounded-full px-4 py-2 bg-foreground hover:opacity-90 text-white "
-                    onClick={() => setCompletedCourses([])}
-                  >
-                    <RiResetLeftLine className="text-sm" />
-                    <p className="text-xs">
-                      {window.innerWidth >= 640
-                        ? "Clear Completed Courses"
-                        : "Clear"}
-                    </p>
-                  </button>
-                )}
-              </span>
-              <div className="flex flex-wrap gap-7 justify-center items-center">
-                {completedCourses.length > 0 ? (
-                  completedCourses.map((completedCourse) => (
-                    <CourseNode
-                      key={completedCourse.courseCode}
-                      courseCode={completedCourse.courseCode}
-                      allocatedGroupId={completedCourse.allocatedGroupId}
-                      showCourseAsList={false}
-                    />
-                  ))
-                ) : (
-                  <p className="flex justify-center items-cente sm:text-base text-sm">
-                    You have not completed any courses yet
-                  </p>
-                )}
-              </div>
-            </div>
+            <CompletedCoursesDrawer
+              setShowCompletedCoursesModal={setShowCompletedCoursesModal}
+              completedCourses={completedCourses}
+              setCompletedCourses={setCompletedCourses}
+            />
           </motion.div>
         )}
       </AnimatePresence>
